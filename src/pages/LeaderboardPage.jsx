@@ -32,6 +32,7 @@ function LeaderboardPage({ account }) {
           <li><Link to="/mint">Mint</Link></li>
           <li><Link to="/marketplace">Marketplace</Link></li>
           <li><Link to="/game">Game</Link></li>
+          <Link to="/faq">FAQ & RULES</Link>
           <li><Link to="/leaderboard">Leaderboard</Link></li>
         </ul>
         <button className="connect-button">

@@ -44,6 +44,7 @@ function LandingPage({ account, setAccount }) {
           <li><Link to="/marketplace">Marketplace</Link></li>
           <li><Link to="/game">Game</Link></li>
           <li><Link to="/leaderboard">Leaderboard</Link></li>
+          <Link to="/faq">FAQ & RULES</Link>
         </ul>
         <button className="connect-button" onClick={handleConnectOrCopy}>
           {label}

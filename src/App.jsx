@@ -8,6 +8,8 @@ import GamePage from './pages/GamePage'
 import LeaderboardPage from './pages/LeaderboardPage'
 import LoadingScreen from './components/LoadingScreen'
 import PageTransition from './components/PageTransition'
+import FAQPage from './components/FAQPage'
+import { StatsProvider } from './context/StatsContext'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -34,68 +36,71 @@ function App() {
   }, [])
 
   return (
-    <div style={{ background: 'transparent', minHeight: '100vh' }}>
-      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+    <StatsProvider>
+      <div style={{ background: 'transparent', minHeight: '100vh' }}>
+        {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
 
-      {!loading && (
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <PageTransition>
-                <LandingPage account={account} setAccount={setAccount} />
-              </PageTransition>
-            }
-          />
+        {!loading && (
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PageTransition>
+                  <LandingPage account={account} setAccount={setAccount} />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/characters"
-            element={
-              <PageTransition>
-                <CharactersPage account={account} />
-              </PageTransition>
-            }
-          />
+            <Route path="/faq" element={<FAQPage />} />
 
-          <Route
-            path="/mint"
-            element={
-              <PageTransition>
-                <MintPage account={account} />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/characters"
+              element={
+                <PageTransition>
+                  <CharactersPage account={account} />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/marketplace"
-            element={
-             <PageTransition>
-               <MarketplacePage account={account} />
-              </PageTransition>
-           }
-        />
+            <Route
+              path="/mint"
+              element={
+                <PageTransition>
+                  <MintPage account={account} />
+                </PageTransition>
+              }
+            />
 
+            <Route
+              path="/marketplace"
+              element={
+                <PageTransition>
+                  <MarketplacePage account={account} />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/game"
-            element={
-              <PageTransition>
-                <GamePage account={account} />
-              </PageTransition>
-            }
-          />
+            <Route
+              path="/game"
+              element={
+                <PageTransition>
+                  <GamePage account={account} />
+                </PageTransition>
+              }
+            />
 
-          <Route
-            path="/leaderboard"
-            element={
-              <PageTransition>
-                <LeaderboardPage account={account} />
-              </PageTransition>
-            }
-          />
-        </Routes>
-      )}
-    </div>
+            <Route
+              path="/leaderboard"
+              element={
+                <PageTransition>
+                  <LeaderboardPage account={account} />
+                </PageTransition>
+              }
+            />
+          </Routes>
+        )}
+      </div>
+    </StatsProvider>
   )
 }
 

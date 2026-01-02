@@ -5,10 +5,24 @@ import TiltCard from '../components/TiltCard'
 import TokenPriceChart from '../components/TokenPriceChart'
 import '../styles/landing.css'
 import '../styles/components.css'
-import cyberSamurai from '../assets/images/character/cyber-samurai.png'
-import chronoKnight from '../assets/images/character/chrono-knight.png'
-import voidMarine from '../assets/images/character/void-marine.png'
-
+import character1 from '../assets/images/marketplace/character1.png'
+import character2 from '../assets/images/marketplace/character2.png'
+import character3 from '../assets/images/marketplace/character3.png'
+import character4 from '../assets/images/marketplace/character4.png'
+import character5 from '../assets/images/marketplace/character5.png'
+import character6 from '../assets/images/marketplace/character6.png'
+import character7 from '../assets/images/marketplace/character7.png'
+import character8 from '../assets/images/marketplace/character8.png'
+import character9 from '../assets/images/marketplace/character9.png'
+import character10 from '../assets/images/marketplace/character10.png'
+import character11 from '../assets/images/marketplace/character11.png'
+import character12 from '../assets/images/marketplace/character12.png'
+import character13 from '../assets/images/marketplace/character13.png'
+import character14 from '../assets/images/marketplace/character14.png'
+import character15 from '../assets/images/marketplace/character15.png'
+import character16 from '../assets/images/marketplace/character16.png'
+import character17 from '../assets/images/marketplace/character17.png'
+import character18 from '../assets/images/marketplace/character18.png'
 const allNfts = [
   {
     id: 1,
@@ -16,7 +30,7 @@ const allNfts = [
     class: 'Samurai',
     price: '0.5 POL',
     rarity: 'Legendary',
-    image: cyberSamurai,
+    image: character1,
     color: '#FF006E',
     icon: '⚔️',
     description: 'The original warrior from Ancient Japan',
@@ -34,7 +48,7 @@ const allNfts = [
     class: 'Knight',
     price: '0.3 POL',
     rarity: 'Epic',
-    image: chronoKnight,
+    image: character2,
     color: '#FFB000',
     icon: '🛡️',
     description: 'Noble defender from Medieval Europe',
@@ -52,7 +66,7 @@ const allNfts = [
     class: 'Marine',
     price: '0.2 POL',
     rarity: 'Rare',
-    image: voidMarine,
+    image: character3,
     color: '#FF6A00',
     icon: '🚀',
     description: 'Elite soldier from Future Mars',
@@ -70,7 +84,7 @@ const allNfts = [
     class: 'Samurai',
     price: '0.4 POL',
     rarity: 'Epic',
-    image: cyberSamurai, // reuse or add shadow-samurai.png
+    image: character4, 
     color: '#FF006E',
     icon: '⚔️',
     description: 'Master of stealth from Ancient Japan',
@@ -88,7 +102,7 @@ const allNfts = [
     class: 'Knight',
     price: '0.25 POL',
     rarity: 'Rare',
-    image: chronoKnight,
+    image: character5,
     color: '#FFB000',
     icon: '🛡️',
     description: 'Time-bending protector from Medieval Europe',
@@ -106,7 +120,7 @@ const allNfts = [
     class: 'Marine',
     price: '0.35 POL',
     rarity: 'Epic',
-    image: voidMarine,
+    image: character6,
     color: '#FF6A00',
     icon: '🚀',
     description: 'Stealth operative from Future Mars',
@@ -124,7 +138,7 @@ const allNfts = [
     class: 'Samurai',
     price: '0.28 POL',
     rarity: 'Rare',
-    image: cyberSamurai,
+    image: character7,
     color: '#FF006E',
     icon: '🗡️',
     description: 'Swift blade master from Ancient Japan',
@@ -142,7 +156,7 @@ const allNfts = [
     class: 'Knight',
     price: '0.22 POL',
     rarity: 'Rare',
-    image: chronoKnight,
+    image: character8,
     color: '#FFB000',
     icon: '🏹',
     description: 'Long-range defender from Medieval Europe',
@@ -160,7 +174,7 @@ const allNfts = [
     class: 'Knight',
     price: '0.45 POL',
     rarity: 'Epic',
-    image: chronoKnight,
+    image: character9,
     color: '#FFB000',
     icon: '🛡️',
     description: 'Blessed warrior from Medieval Europe',
@@ -178,7 +192,7 @@ const allNfts = [
     class: 'Marine',
     price: '0.6 POL',
     rarity: 'Legendary',
-    image: voidMarine,
+    image: character10,
     color: '#FF6A00',
     icon: '💠',
     description: 'Reality-bending soldier from Future Mars',
@@ -196,7 +210,7 @@ const allNfts = [
     class: 'Samurai',
     price: '0.24 POL',
     rarity: 'Rare',
-    image: cyberSamurai,
+    image: character11,
     color: '#FF006E',
     icon: '🗡️',
     description: 'Agile infiltrator from Ancient Japan',
@@ -214,7 +228,7 @@ const allNfts = [
     class: 'Knight',
     price: '0.32 POL',
     rarity: 'Epic',
-    image: chronoKnight,
+    image: character12,
     color: '#FFB000',
     icon: '🛡️',
     description: 'Unwavering guardian from Medieval Europe',
@@ -232,7 +246,7 @@ const allNfts = [
     class: 'Samurai',
     price: '0.27 POL',
     rarity: 'Rare',
-    image: cyberSamurai,
+    image: character13,
     color: '#FF006E',
     icon: '🔥',
     description: 'Fire-wielding warrior from Ancient Japan',
@@ -250,7 +264,7 @@ const allNfts = [
     class: 'Marine',
     price: '0.7 POL',
     rarity: 'Legendary',
-    image: voidMarine,
+    image: character14,
     color: '#FF6A00',
     icon: '🌌',
     description: 'Cosmic warrior from Future Mars',
@@ -268,7 +282,7 @@ const allNfts = [
     class: 'Knight',
     price: '0.55 POL',
     rarity: 'Epic',
-    image: chronoKnight,
+    image: character15,
     color: '#FFB000',
     icon: '🗿',
     description: 'Colossal defender from Medieval Europe',
@@ -286,7 +300,7 @@ const allNfts = [
     class: 'Samurai',
     price: '0.29 POL',
     rarity: 'Rare',
-    image: cyberSamurai,
+    image: character16,
     color: '#FF006E',
     icon: '🤖',
     description: 'Tech-enhanced samurai from Ancient Japan',
@@ -304,7 +318,7 @@ const allNfts = [
     class: 'Marine',
     price: '0.31 POL',
     rarity: 'Epic',
-    image: voidMarine,
+    image: character17,
     color: '#FF6A00',
     icon: '👻',
     description: 'Ghost soldier from Future Mars',
@@ -322,7 +336,7 @@ const allNfts = [
     class: 'Knight',
     price: '0.26 POL',
     rarity: 'Rare',
-    image: chronoKnight,
+    image: character18,
     color: '#FFB000',
     icon: '☄️',
     description: 'Sky warrior from Medieval Europe',
@@ -355,6 +369,7 @@ function MarketplacePage({ account }) {
           <li><Link to="/mint">Mint</Link></li>
           <li><Link to="/marketplace">Marketplace</Link></li>
           <li><Link to="/game">Game</Link></li>
+          <Link to="/faq">FAQ & RULES</Link>
           <li><Link to="/leaderboard">Leaderboard</Link></li>
         </ul>
         <button className="connect-button">

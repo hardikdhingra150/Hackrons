@@ -7,7 +7,7 @@ import voidMarine from '../assets/images/character/void-marine.png'
 const characters = [
   { id: 1, name: 'Cyber Samurai', class: 'Samurai', description: 'Masters of agility and melee combat from Ancient Japan', image: cyberSamurai, color: '#FF006E', icon: '⚔️' },
   { id: 2, name: 'Chrono Knight', class: 'Knight', description: 'Defenders with unbreakable shields from Medieval Europe', image: chronoKnight, color: '#FFB000', icon: '🛡️' },
-  { id: 3, name: 'Void Marine', class: 'Marine', description: 'Tech warriors with advanced weaponry from Future Mars', image: voidMarine, color: '#FF6A00', icon: '🚀' },
+  { id: 3, name: 'Void harignton', class: 'Marine', description: 'Tech warriors with advanced weaponry from Future Mars', image: voidMarine, color: '#FF6A00', icon: '🚀' },
 ]
 
 function ClassSelection({ account }) {

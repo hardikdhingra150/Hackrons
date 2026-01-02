@@ -28,7 +28,7 @@ const characters = [
   },
   {
     id: 3,
-    name: 'Void Marine',
+    name: 'Void harignton',
     class: 'Marine',
     era: 'Future Mars',
     stats: { str: 75, agi: 80, def: 85 },

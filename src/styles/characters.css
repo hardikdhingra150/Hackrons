@@ -1,0 +1,1426 @@
+/* Add at the end of the file */
+
+.claimed-banner {
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 15px;
+    display: inline-block;
+  }
+  
+  .character-card.claimed {
+    border: 3px solid #00ff88;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+  }
+  
+  .owned-badge {
+    background: #00ff88;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  
+  .claim-btn.disabled {
+    background: #555;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  .claim-info-box {
+    background: rgba(255, 149, 0, 0.1);
+    border: 2px solid rgba(255, 149, 0, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .claim-info-box h3 {
+    color: #ff9500;
+    margin-bottom: 15px;
+  }
+  
+  .claim-info-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .claim-info-box li {
+    padding: 8px 0;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  .claim-info-box a {
+    color: #00d4ff;
+    text-decoration: underline;
+  }
+  
+  /* Claim Modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  }
+  
+  .claim-modal {
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    border: 2px solid #ff9500;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+  }
+  
+  .claim-modal h2 {
+    color: #ff9500;
+    margin-bottom: 25px;
+    font-size: 28px;
+  }
+  
+  .modal-character {
+    margin: 25px 0;
+  }
+  
+  .modal-character img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid #ff9500;
+    margin-bottom: 15px;
+  }
+  
+  .modal-character h3 {
+    color: #fff;
+    font-size: 24px;
+  }
+  
+  .modal-warning {
+    background: rgba(255, 149, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    color: #fff;
+    margin: 20px 0;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+  }
+  
+  .cancel-btn, .confirm-btn {
+    padding: 12px 30px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .cancel-btn {
+    background: #555;
+    color: #fff;
+  }
+  
+  .cancel-btn:hover {
+    background: #666;
+  }
+  
+  .confirm-btn {
+    background: linear-gradient(135deg, #ff9500, #ffb800);
+    color: #000;
+  }
+  
+  .confirm-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 149, 0, 0.6);
+  }
+  .characters-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 50%, #0a0a0a 100%);
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* Animated Background Pattern */
+  .characters-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(rgba(255, 149, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 149, 0, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  @keyframes gridMove {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(50px, 50px);
+    }
+  }
+  
+  /* Hero Section */
+  .characters-hero {
+    text-align: center;
+    padding: 120px 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .characters-title {
+    font-size: 56px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff9500, #ffb800, #ff9500);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    animation: shimmer 3s linear infinite;
+    text-shadow: 0 0 30px rgba(255, 149, 0, 0.3);
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+  
+  .characters-subtitle {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  /* Claimed Banner */
+  .claimed-banner {
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #000;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 20px;
+    margin-top: 25px;
+    display: inline-block;
+    box-shadow: 0 5px 30px rgba(0, 255, 136, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+    letter-spacing: 1px;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  
+  /* Characters Section */
+  .characters-section {
+    padding: 40px 20px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .section-title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    color: #ff9500;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .section-subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 50px;
+  }
+  
+  /* Characters Grid */
+  .characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    padding: 20px;
+  }
+  
+  /* Character Card */
+  .character-card {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(40, 20, 0, 0.95));
+    border: 2px solid rgba(255, 149, 0, 0.3);
+    border-radius: 25px;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+  
+  .character-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 149, 0, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  
+  .character-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff9500;
+    box-shadow: 
+      0 20px 60px rgba(255, 149, 0, 0.3),
+      0 0 0 1px rgba(255, 149, 0, 0.2),
+      inset 0 0 50px rgba(255, 149, 0, 0.05);
+  }
+  
+  .character-card:hover::before {
+    opacity: 1;
+    animation: rotate 4s linear infinite;
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .character-card.claimed {
+    border: 3px solid #00ff88;
+    box-shadow: 
+      0 10px 50px rgba(0, 255, 136, 0.4),
+      0 0 0 1px rgba(0, 255, 136, 0.3),
+      inset 0 0 30px rgba(0, 255, 136, 0.1);
+    animation: claimedGlow 2s ease-in-out infinite;
+  }
+  
+  @keyframes claimedGlow {
+    0%, 100% {
+      box-shadow: 
+        0 10px 50px rgba(0, 255, 136, 0.4),
+        0 0 0 1px rgba(0, 255, 136, 0.3),
+        inset 0 0 30px rgba(0, 255, 136, 0.1);
+    }
+    50% {
+      box-shadow: 
+        0 15px 70px rgba(0, 255, 136, 0.6),
+        0 0 0 2px rgba(0, 255, 136, 0.5),
+        inset 0 0 50px rgba(0, 255, 136, 0.2);
+    }
+  }
+  
+  /* Card Header */
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.15), rgba(255, 184, 0, 0.05));
+    border-bottom: 1px solid rgba(255, 149, 0, 0.2);
+  }
+  
+  .rarity-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .rarity-badge.common {
+    background: linear-gradient(135deg, #666, #888);
+    color: #fff;
+  }
+  
+  .owned-badge {
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #000;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.5);
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes badgePulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+  
+  /* Character Image Container */
+  .character-image-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, rgba(255, 149, 0, 0.1), transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .character-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 15px;
+    transition: transform 0.5s ease;
+    filter: drop-shadow(0 10px 30px rgba(255, 149, 0, 0.3));
+  }
+  
+  .character-card:hover .character-image {
+    transform: scale(1.1) rotate(2deg);
+  }
+  
+  /* Character Info */
+  .character-info {
+    padding: 30px 25px;
+  }
+  
+  .character-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #ff9500;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(255, 149, 0, 0.3);
+  }
+  
+  .character-description {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 25px;
+    line-height: 1.6;
+    min-height: 45px;
+  }
+  
+  /* Stats Container */
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 149, 0, 0.2);
+  }
+  
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 149, 0, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+  
+  .stat:hover {
+    background: rgba(255, 149, 0, 0.15);
+    transform: translateX(5px);
+  }
+  
+  .stat-icon {
+    font-size: 22px;
+    filter: drop-shadow(0 2px 5px rgba(255, 149, 0, 0.5));
+  }
+  
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ff9500;
+    margin-left: auto;
+  }
+  
+  /* Claim Button */
+  .claim-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #ff9500, #ffb800);
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 25px rgba(255, 149, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .claim-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  .claim-btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .claim-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(255, 149, 0, 0.6);
+  }
+  
+  .claim-btn.disabled {
+    background: linear-gradient(135deg, #444, #555);
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+  }
+  
+  .claim-btn.disabled:hover {
+    transform: none;
+  }
+  
+  /* Claim Info Box */
+  .claim-info-box {
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.15), rgba(255, 149, 0, 0.05));
+    border: 2px solid rgba(255, 149, 0, 0.4);
+    border-radius: 20px;
+    padding: 35px;
+    margin-top: 60px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 10px 40px rgba(255, 149, 0, 0.2);
+  }
+  
+  .claim-info-box h3 {
+    color: #ff9500;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .claim-info-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .claim-info-box li {
+    padding: 12px 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.6;
+    position: relative;
+    padding-left: 30px;
+  }
+  
+  .claim-info-box li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #ff9500;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .claim-info-box a {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+  
+  .claim-info-box a:hover {
+    color: #00ff88;
+    text-decoration: underline;
+  }
+  
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .claim-modal {
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    border: 3px solid #ff9500;
+    border-radius: 25px;
+    padding: 50px;
+    max-width: 550px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 
+      0 20px 80px rgba(255, 149, 0, 0.4),
+      0 0 0 1px rgba(255, 149, 0, 0.2);
+    animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes modalSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .claim-modal h2 {
+    color: #ff9500;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .modal-character {
+    margin: 30px 0;
+  }
+  
+  .modal-character img {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: 4px solid #ff9500;
+    margin-bottom: 20px;
+    box-shadow: 
+      0 10px 40px rgba(255, 149, 0, 0.5),
+      0 0 0 10px rgba(255, 149, 0, 0.1);
+    animation: modalImagePulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes modalImagePulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 
+        0 10px 40px rgba(255, 149, 0, 0.5),
+        0 0 0 10px rgba(255, 149, 0, 0.1);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 
+        0 15px 50px rgba(255, 149, 0, 0.7),
+        0 0 0 15px rgba(255, 149, 0, 0.2);
+    }
+  }
+  
+  .modal-character h3 {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .modal-warning {
+    background: rgba(255, 149, 0, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    color: #fff;
+    margin: 25px 0;
+    font-size: 16px;
+    line-height: 1.8;
+    border: 1px solid rgba(255, 149, 0, 0.3);
+  }
+  
+  .modal-warning strong {
+    color: #ff9500;
+    font-weight: 800;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .cancel-btn, .confirm-btn {
+    padding: 16px 40px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .cancel-btn {
+    background: #555;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .cancel-btn:hover {
+    background: #666;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+  
+  .confirm-btn {
+    background: linear-gradient(135deg, #ff9500, #ffb800);
+    color: #000;
+    box-shadow: 0 6px 25px rgba(255, 149, 0, 0.4);
+  }
+  
+  .confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(255, 149, 0, 0.6);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .characters-title {
+      font-size: 36px;
+    }
+    
+    .characters-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    
+    .section-title {
+      font-size: 32px;
+    }
+    
+    .claim-modal {
+      padding: 30px;
+    }
+    
+    .modal-character img {
+      width: 180px;
+      height: 180px;
+    }
+  }
+  .characters-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 50%, #1a0f0a 100%);
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* Animated Background Pattern */
+  .characters-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(rgba(255, 149, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 149, 0, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  @keyframes gridMove {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(50px, 50px);
+    }
+  }
+  
+  /* Hero Section */
+  .characters-hero {
+    text-align: center;
+    padding: 120px 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .characters-title {
+    font-size: 56px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff9500, #ffb800, #ff9500);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    animation: shimmer 3s linear infinite;
+    text-shadow: 0 0 30px rgba(255, 149, 0, 0.3);
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+  
+  .characters-subtitle {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  /* Claimed Banner */
+  .claimed-banner {
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #000;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 20px;
+    margin-top: 25px;
+    display: inline-block;
+    box-shadow: 0 5px 30px rgba(0, 255, 136, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+    letter-spacing: 1px;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  
+  /* Characters Section */
+  .characters-section {
+    padding: 40px 20px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .section-title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    color: #ff9500;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .section-subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 50px;
+  }
+  
+  /* Characters Grid */
+  .characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    padding: 20px;
+  }
+  
+  /* Character Card */
+  .character-card {
+    background: linear-gradient(135deg, rgba(45, 24, 16, 0.95), rgba(60, 30, 15, 0.95));
+    border: 2px solid rgba(255, 149, 0, 0.3);
+    border-radius: 25px;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+  
+  .character-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 149, 0, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  
+  .character-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff9500;
+    box-shadow: 
+      0 20px 60px rgba(255, 149, 0, 0.3),
+      0 0 0 1px rgba(255, 149, 0, 0.2),
+      inset 0 0 50px rgba(255, 149, 0, 0.05);
+  }
+  
+  .character-card:hover::before {
+    opacity: 1;
+    animation: rotate 4s linear infinite;
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .character-card.claimed {
+    border: 3px solid #00ff88;
+    box-shadow: 
+      0 10px 50px rgba(0, 255, 136, 0.4),
+      0 0 0 1px rgba(0, 255, 136, 0.3),
+      inset 0 0 30px rgba(0, 255, 136, 0.1);
+    animation: claimedGlow 2s ease-in-out infinite;
+  }
+  
+  @keyframes claimedGlow {
+    0%, 100% {
+      box-shadow: 
+        0 10px 50px rgba(0, 255, 136, 0.4),
+        0 0 0 1px rgba(0, 255, 136, 0.3),
+        inset 0 0 30px rgba(0, 255, 136, 0.1);
+    }
+    50% {
+      box-shadow: 
+        0 15px 70px rgba(0, 255, 136, 0.6),
+        0 0 0 2px rgba(0, 255, 136, 0.5),
+        inset 0 0 50px rgba(0, 255, 136, 0.2);
+    }
+  }
+  
+  /* Card Header */
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.2), rgba(255, 184, 0, 0.1));
+    border-bottom: 1px solid rgba(255, 149, 0, 0.3);
+  }
+  
+  .rarity-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .rarity-badge.common {
+    background: linear-gradient(135deg, #8B4513, #A0522D);
+    color: #fff;
+    border: 1px solid rgba(255, 149, 0, 0.3);
+  }
+  
+  .owned-badge {
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #000;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.5);
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes badgePulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+  
+  /* Character Image Container */
+  .character-image-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, rgba(255, 149, 0, 0.15), transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .character-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 15px;
+    transition: transform 0.5s ease;
+    filter: drop-shadow(0 10px 30px rgba(255, 149, 0, 0.3));
+  }
+  
+  .character-card:hover .character-image {
+    transform: scale(1.1) rotate(2deg);
+  }
+  
+  /* Character Info */
+  .character-info {
+    padding: 30px 25px;
+  }
+  
+  .character-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #ff9500;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(255, 149, 0, 0.3);
+  }
+  
+  .character-description {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 25px;
+    line-height: 1.6;
+    min-height: 45px;
+  }
+  
+  /* Stats Container */
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 149, 0, 0.2);
+  }
+  
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 149, 0, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+  
+  .stat:hover {
+    background: rgba(255, 149, 0, 0.15);
+    transform: translateX(5px);
+  }
+  
+  .stat-icon {
+    font-size: 22px;
+    filter: drop-shadow(0 2px 5px rgba(255, 149, 0, 0.5));
+  }
+  
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ff9500;
+    margin-left: auto;
+  }
+  
+  /* Claim Button */
+  .claim-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #ff9500, #ffb800);
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 25px rgba(255, 149, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .claim-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  .claim-btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .claim-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(255, 149, 0, 0.6);
+  }
+  
+  .claim-btn.disabled {
+    background: linear-gradient(135deg, #5a3825, #6b4530);
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+  }
+  
+  .claim-btn.disabled:hover {
+    transform: none;
+  }
+  
+  /* Claim Info Box */
+  .claim-info-box {
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.2), rgba(139, 69, 19, 0.3));
+    border: 2px solid rgba(255, 149, 0, 0.4);
+    border-radius: 20px;
+    padding: 35px;
+    margin-top: 60px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 10px 40px rgba(255, 149, 0, 0.2);
+  }
+  
+  .claim-info-box h3 {
+    color: #ff9500;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .claim-info-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .claim-info-box li {
+    padding: 12px 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.6;
+    position: relative;
+    padding-left: 30px;
+  }
+  
+  .claim-info-box li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #ff9500;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .claim-info-box a {
+    color: #00d4ff;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+  
+  .claim-info-box a:hover {
+    color: #00ff88;
+    text-decoration: underline;
+  }
+  
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 15, 10, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .claim-modal {
+    background: linear-gradient(135deg, #2d1810, #3c1e0f);
+    border: 3px solid #ff9500;
+    border-radius: 25px;
+    padding: 50px;
+    max-width: 550px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 
+      0 20px 80px rgba(255, 149, 0, 0.4),
+      0 0 0 1px rgba(255, 149, 0, 0.2);
+    animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes modalSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .claim-modal h2 {
+    color: #ff9500;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .modal-character {
+    margin: 30px 0;
+  }
+  
+  .modal-character img {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    border: 4px solid #ff9500;
+    margin-bottom: 20px;
+    box-shadow: 
+      0 10px 40px rgba(255, 149, 0, 0.5),
+      0 0 0 10px rgba(255, 149, 0, 0.1);
+    animation: modalImagePulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes modalImagePulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 
+        0 10px 40px rgba(255, 149, 0, 0.5),
+        0 0 0 10px rgba(255, 149, 0, 0.1);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 
+        0 15px 50px rgba(255, 149, 0, 0.7),
+        0 0 0 15px rgba(255, 149, 0, 0.2);
+    }
+  }
+  
+  .modal-character h3 {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .modal-warning {
+    background: rgba(255, 149, 0, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    color: #fff;
+    margin: 25px 0;
+    font-size: 16px;
+    line-height: 1.8;
+    border: 1px solid rgba(255, 149, 0, 0.3);
+  }
+  
+  .modal-warning strong {
+    color: #ff9500;
+    font-weight: 800;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .cancel-btn, .confirm-btn {
+    padding: 16px 40px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .cancel-btn {
+    background: linear-gradient(135deg, #5a3825, #6b4530);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 149, 0, 0.2);
+  }
+  
+  .cancel-btn:hover {
+    background: linear-gradient(135deg, #6b4530, #7c543b);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+  
+  .confirm-btn {
+    background: linear-gradient(135deg, #ff9500, #ffb800);
+    color: #000;
+    box-shadow: 0 6px 25px rgba(255, 149, 0, 0.4);
+  }
+  
+  .confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(255, 149, 0, 0.6);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .characters-title {
+      font-size: 36px;
+    }
+    
+    .characters-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    
+    .section-title {
+      font-size: 32px;
+    }
+    
+    .claim-modal {
+      padding: 30px;
+    }
+    
+    .modal-character img {
+      width: 180px;
+      height: 180px;
+    }
+  }
+      
