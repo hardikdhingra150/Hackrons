@@ -1,7 +1,35 @@
-# Sample Hardhat 3 Beta Project (minimal)
+# 🎮 Hackrons - NFT Gaming Platform
 
-This project has a minimal setup of Hardhat 3 Beta, without any plugins.
+A blockchain-based NFT gaming platform where players can claim free characters, battle opponents, and compete in tournaments.
 
-## What's included?
+## 🚀 Features
 
-The project includes native support for TypeScript, Hardhat scripts, tasks, and support for Solidity compilation and tests.
+- ⚔️ Battle System with timing-based attacks
+- 🎯 Character claiming (1 free character per user)
+- 📊 Player stats tracking
+- 🏆 Leaderboard system
+- 🛒 NFT Marketplace
+- 💫 Animated UI with smooth transitions
+
+## 🛠️ Tech Stack
+
+- React.js
+- Ethers.js
+- Web3 (MetaMask)
+- Polygon Network
+- Vite
+
+## 📦 Installation
+
+```bash
+# Clone repository
+git clone https://github.com/YOUR_USERNAME/hackrons-nft-game.git
+
+# Navigate to project
+cd hackrons-nft-game
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
