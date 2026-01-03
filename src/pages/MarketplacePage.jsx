@@ -1,10 +1,12 @@
-// src/pages/MarketplacePage.jsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+//import { ethers } from 'ethers'
 import TiltCard from '../components/TiltCard'
 import TokenPriceChart from '../components/TokenPriceChart'
 import '../styles/landing.css'
 import '../styles/components.css'
+import '../styles/marketplace.css'
+
 import character1 from '../assets/images/marketplace/character1.png'
 import character2 from '../assets/images/marketplace/character2.png'
 import character3 from '../assets/images/marketplace/character3.png'
@@ -23,12 +25,13 @@ import character15 from '../assets/images/marketplace/character15.png'
 import character16 from '../assets/images/marketplace/character16.png'
 import character17 from '../assets/images/marketplace/character17.png'
 import character18 from '../assets/images/marketplace/character18.png'
+
 const allNfts = [
   {
     id: 1,
     name: 'Genesis Samurai',
     class: 'Samurai',
-    price: '0.5 POL',
+    price: '0.5',
     rarity: 'Legendary',
     image: character1,
     color: '#FF006E',
@@ -46,7 +49,7 @@ const allNfts = [
     id: 2,
     name: 'Royal Knight',
     class: 'Knight',
-    price: '0.3 POL',
+    price: '0.3',
     rarity: 'Epic',
     image: character2,
     color: '#FFB000',
@@ -64,7 +67,7 @@ const allNfts = [
     id: 3,
     name: 'Void Marine',
     class: 'Marine',
-    price: '0.2 POL',
+    price: '0.2',
     rarity: 'Rare',
     image: character3,
     color: '#FF6A00',
@@ -82,9 +85,9 @@ const allNfts = [
     id: 4,
     name: 'Shadow Samurai',
     class: 'Samurai',
-    price: '0.4 POL',
+    price: '0.4',
     rarity: 'Epic',
-    image: character4, 
+    image: character4,
     color: '#FF006E',
     icon: '⚔️',
     description: 'Master of stealth from Ancient Japan',
@@ -100,7 +103,7 @@ const allNfts = [
     id: 5,
     name: 'Chrono Guardian',
     class: 'Knight',
-    price: '0.25 POL',
+    price: '0.25',
     rarity: 'Rare',
     image: character5,
     color: '#FFB000',
@@ -118,7 +121,7 @@ const allNfts = [
     id: 6,
     name: 'Void Assassin',
     class: 'Marine',
-    price: '0.35 POL',
+    price: '0.35',
     rarity: 'Epic',
     image: character6,
     color: '#FF6A00',
@@ -136,7 +139,7 @@ const allNfts = [
     id: 7,
     name: 'Shadow Blade',
     class: 'Samurai',
-    price: '0.28 POL',
+    price: '0.28',
     rarity: 'Rare',
     image: character7,
     color: '#FF006E',
@@ -154,7 +157,7 @@ const allNfts = [
     id: 8,
     name: 'Archer Knight',
     class: 'Knight',
-    price: '0.22 POL',
+    price: '0.22',
     rarity: 'Rare',
     image: character8,
     color: '#FFB000',
@@ -172,7 +175,7 @@ const allNfts = [
     id: 9,
     name: 'Holy Paladin',
     class: 'Knight',
-    price: '0.45 POL',
+    price: '0.45',
     rarity: 'Epic',
     image: character9,
     color: '#FFB000',
@@ -190,7 +193,7 @@ const allNfts = [
     id: 10,
     name: 'Quantum Warrior',
     class: 'Marine',
-    price: '0.6 POL',
+    price: '0.6',
     rarity: 'Legendary',
     image: character10,
     color: '#FF6A00',
@@ -208,7 +211,7 @@ const allNfts = [
     id: 11,
     name: 'Rogue Ninja',
     class: 'Samurai',
-    price: '0.24 POL',
+    price: '0.24',
     rarity: 'Rare',
     image: character11,
     color: '#FF006E',
@@ -226,7 +229,7 @@ const allNfts = [
     id: 12,
     name: 'Sentinel Knight',
     class: 'Knight',
-    price: '0.32 POL',
+    price: '0.32',
     rarity: 'Epic',
     image: character12,
     color: '#FFB000',
@@ -244,7 +247,7 @@ const allNfts = [
     id: 13,
     name: 'Blaze Samurai',
     class: 'Samurai',
-    price: '0.27 POL',
+    price: '0.27',
     rarity: 'Rare',
     image: character13,
     color: '#FF006E',
@@ -262,7 +265,7 @@ const allNfts = [
     id: 14,
     name: 'Nebula Marine',
     class: 'Marine',
-    price: '0.7 POL',
+    price: '0.7',
     rarity: 'Legendary',
     image: character14,
     color: '#FF6A00',
@@ -280,7 +283,7 @@ const allNfts = [
     id: 15,
     name: 'Titan Knight',
     class: 'Knight',
-    price: '0.55 POL',
+    price: '0.55',
     rarity: 'Epic',
     image: character15,
     color: '#FFB000',
@@ -298,7 +301,7 @@ const allNfts = [
     id: 16,
     name: 'Cyber Ronin',
     class: 'Samurai',
-    price: '0.29 POL',
+    price: '0.29',
     rarity: 'Rare',
     image: character16,
     color: '#FF006E',
@@ -316,7 +319,7 @@ const allNfts = [
     id: 17,
     name: 'Phantom Marine',
     class: 'Marine',
-    price: '0.31 POL',
+    price: '0.31',
     rarity: 'Epic',
     image: character17,
     color: '#FF6A00',
@@ -334,7 +337,7 @@ const allNfts = [
     id: 18,
     name: 'Meteor Knight',
     class: 'Knight',
-    price: '0.26 POL',
+    price: '0.26',
     rarity: 'Rare',
     image: character18,
     color: '#FFB000',
@@ -350,14 +353,113 @@ const allNfts = [
   }
 ]
 
-
 function MarketplacePage({ account }) {
   const [showFull, setShowFull] = useState(false)
+  const [buyingId, setBuyingId] = useState(null)
+  const [showModal, setShowModal] = useState(false)
+  const [selectedNft, setSelectedNft] = useState(null)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [purchasedNft, setPurchasedNft] = useState(null)
+  const [filterRarity, setFilterRarity] = useState('all')
+  const [filterClass, setFilterClass] = useState('all')
+  const [sortBy, setSortBy] = useState('price-low')
 
-  const shortAddress =
-    account && `${account.slice(0, 6)}...${account.slice(-4)}`
+  const shortAddress = account && `${account.slice(0, 6)}...${account.slice(-4)}`
 
-  const visibleNfts = showFull ? allNfts : allNfts.slice(0, 6)
+  // Filter and sort NFTs
+  const filteredNfts = allNfts
+    .filter(nft => filterRarity === 'all' || nft.rarity.toLowerCase() === filterRarity)
+    .filter(nft => filterClass === 'all' || nft.class.toLowerCase() === filterClass)
+    .sort((a, b) => {
+      switch(sortBy) {
+        case 'price-low':
+          return parseFloat(a.price) - parseFloat(b.price)
+        case 'price-high':
+          return parseFloat(b.price) - parseFloat(a.price)
+        case 'name':
+          return a.name.localeCompare(b.name)
+        case 'rarity':
+          const rarityOrder = { 'Legendary': 4, 'Epic': 3, 'Rare': 2, 'Common': 1 }
+          return rarityOrder[b.rarity] - rarityOrder[a.rarity]
+        default:
+          return 0
+      }
+    })
+
+  const visibleNfts = showFull ? filteredNfts : filteredNfts.slice(0, 6)
+
+  const handleBuyClick = (nft) => {
+    setSelectedNft(nft)
+    setShowModal(true)
+  }
+
+  const confirmPurchase = async () => {
+    if (!account) {
+      alert('Please connect your wallet first!')
+      return
+    }
+
+    setBuyingId(selectedNft.id)
+    setShowModal(false)
+
+    try {
+      // Simulate blockchain transaction
+      // In production, replace with actual smart contract call
+      await mockPurchase(selectedNft)
+      
+      // Save to localStorage
+      const ownedCharacters = JSON.parse(localStorage.getItem('ownedCharacters') || '[]')
+      const newCharacter = {
+        ...selectedNft,
+        tokenId: selectedNft.id,
+        purchasedAt: new Date().toISOString(),
+        owner: account
+      }
+      ownedCharacters.push(newCharacter)
+      localStorage.setItem('ownedCharacters', JSON.stringify(ownedCharacters))
+
+      // Show success
+      setPurchasedNft(selectedNft)
+      setShowSuccessModal(true)
+      setBuyingId(null)
+
+    } catch (error) {
+      console.error('Purchase failed:', error)
+      alert('Purchase failed: ' + error.message)
+      setBuyingId(null)
+    }
+  }
+
+  const mockPurchase = (nft) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // Simulate 95% success rate
+        if (Math.random() > 0.05) {
+          resolve()
+        } else {
+          reject(new Error('Transaction failed'))
+        }
+      }, 2000)
+    })
+  }
+
+  // Real blockchain purchase function (for when contract is deployed)
+  //const realPurchase = async (nft) => {
+    //const provider = new ethers.BrowserProvider(window.ethereum)
+    //const signer = await provider.getSigner()
+    
+    // Your contract details
+    //const CONTRACT_ADDRESS = "YOUR_CONTRACT_ADDRESS"
+    //const CONTRACT_ABI = [
+      //"function buyCharacter(uint256 tokenId) public payable"
+    //]
+    
+   // const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer)
+    //const priceInWei = ethers.parseEther(nft.price)
+    
+    //const tx = await contract.buyCharacter(nft.id, { value: priceInWei })
+    //await tx.wait()
+  //}
 
   return (
     <div>
@@ -369,8 +471,8 @@ function MarketplacePage({ account }) {
           <li><Link to="/mint">Mint</Link></li>
           <li><Link to="/marketplace">Marketplace</Link></li>
           <li><Link to="/game">Game</Link></li>
-          <Link to="/faq">FAQ & RULES</Link>
           <li><Link to="/leaderboard">Leaderboard</Link></li>
+          <li><Link to="/faq">FAQ & RULES</Link></li>
         </ul>
         <button className="connect-button">
           {shortAddress || 'Connect Wallet'}
@@ -388,7 +490,7 @@ function MarketplacePage({ account }) {
       >
         <section className="nft-gallery">
           <h2 className="gallery-title">
-            {showFull ? 'Full Marketplace' : 'Featured NFTs'}
+            {showFull ? '🛒 Full Marketplace' : '⭐ Featured NFTs'}
           </h2>
           <p className="gallery-subtitle">
             {showFull
@@ -396,32 +498,92 @@ function MarketplacePage({ account }) {
               : 'Explore rare warriors from across time'}
           </p>
 
-          <div className="nft-grid">
-  {visibleNfts.map((nft) => (
-    <TiltCard key={nft.id} maxTilt={15}>
-      <div className="nft-card">
-        <div className="nft-image">
-          <img src={nft.image} alt={nft.name} />
-          <span className={`nft-rarity ${nft.rarity.toLowerCase()}`}>
-            {nft.rarity}
-          </span>
-        </div>
-        <div className="nft-info">
-          <h3 className="nft-name" style={{ color: nft.color }}>
-            {nft.name}
-          </h3>
-          <p className="nft-class">{nft.class}</p>
-          <div className="nft-price">
-            <span className="price-label">Price:</span>
-            <span className="price-value">{nft.price}</span>
-          </div>
-          <button className="nft-buy-btn">Buy Now</button>
-        </div>
-      </div>
-    </TiltCard>
-  ))}
-</div>
+          {/* Filters - Show only in full view */}
+          {showFull && (
+            <div className="marketplace-filters">
+              <div className="filter-group">
+                <label>Rarity:</label>
+                <select value={filterRarity} onChange={(e) => setFilterRarity(e.target.value)}>
+                  <option value="all">All</option>
+                  <option value="legendary">Legendary</option>
+                  <option value="epic">Epic</option>
+                  <option value="rare">Rare</option>
+                </select>
+              </div>
 
+              <div className="filter-group">
+                <label>Class:</label>
+                <select value={filterClass} onChange={(e) => setFilterClass(e.target.value)}>
+                  <option value="all">All</option>
+                  <option value="samurai">Samurai</option>
+                  <option value="knight">Knight</option>
+                  <option value="marine">Marine</option>
+                </select>
+              </div>
+
+              <div className="filter-group">
+                <label>Sort:</label>
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="name">Name</option>
+                  <option value="rarity">Rarity</option>
+                </select>
+              </div>
+
+              <div className="results-count">
+                {filteredNfts.length} characters available
+              </div>
+            </div>
+          )}
+
+          <div className="nft-grid">
+            {visibleNfts.map((nft) => (
+              <TiltCard key={nft.id} maxTilt={15}>
+                <div className="nft-card">
+                  <div className="nft-image">
+                    <img src={nft.image} alt={nft.name} />
+                    <span className={`nft-rarity ${nft.rarity.toLowerCase()}`}>
+                      {nft.rarity}
+                    </span>
+                  </div>
+                  <div className="nft-info">
+                    <h3 className="nft-name" style={{ color: nft.color }}>
+                      {nft.icon} {nft.name}
+                    </h3>
+                    <p className="nft-class">{nft.class}</p>
+                    
+                    {showFull && (
+                      <p className="nft-description">{nft.description}</p>
+                    )}
+
+                    <div className="nft-price">
+                      <span className="price-label">Price:</span>
+                      <span className="price-value">
+                        <span className="crypto-icon">Ⓜ</span>
+                        {nft.price} POL
+                      </span>
+                    </div>
+                    
+                    <button 
+                      className="nft-buy-btn"
+                      onClick={() => handleBuyClick(nft)}
+                      disabled={buyingId === nft.id}
+                    >
+                      {buyingId === nft.id ? (
+                        <>
+                          <span className="spinner"></span>
+                          Processing...
+                        </>
+                      ) : (
+                        <>🛒 Buy Now</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </TiltCard>
+            ))}
+          </div>
 
           {/* Show button only when viewing 6 */}
           {!showFull && (
@@ -430,7 +592,7 @@ function MarketplacePage({ account }) {
               className="gallery-more-btn"
               onClick={() => setShowFull(true)}
             >
-              View Marketplace →
+              View Full Marketplace →
             </button>
           )}
         </section>
@@ -438,6 +600,79 @@ function MarketplacePage({ account }) {
         {/* Show token chart only when full view is open */}
         {showFull && <TokenPriceChart />}
       </div>
+
+      {/* Confirmation Modal */}
+      {showModal && selectedNft && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Confirm Purchase</h2>
+            <img src={selectedNft.image} alt={selectedNft.name} className="modal-image" />
+            <h3 style={{ color: selectedNft.color }}>{selectedNft.name}</h3>
+            <p className="modal-description">{selectedNft.description}</p>
+            
+            <div className="modal-stats">
+              <div className="stat-row">
+                <span>⚔️ Attack:</span>
+                <span>{selectedNft.stats.attack}</span>
+              </div>
+              <div className="stat-row">
+                <span>🛡️ Defense:</span>
+                <span>{selectedNft.stats.defense}</span>
+              </div>
+              <div className="stat-row">
+                <span>⚡ Speed:</span>
+                <span>{selectedNft.stats.speed}</span>
+              </div>
+              <div className="stat-row">
+                <span>❤️ Health:</span>
+                <span>{selectedNft.stats.health}</span>
+              </div>
+            </div>
+
+            <div className="modal-price">
+              <span className="price-label">Total Price:</span>
+              <span className="price-value">
+                <span className="crypto-icon">Ⓜ</span>
+                {selectedNft.price} POL
+              </span>
+            </div>
+
+            <div className="modal-buttons">
+              <button className="cancel-btn" onClick={() => setShowModal(false)}>
+                Cancel
+              </button>
+              <button className="confirm-btn" onClick={confirmPurchase}>
+                ✓ Confirm Purchase
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && purchasedNft && (
+        <div className="modal-overlay" onClick={() => setShowSuccessModal(false)}>
+          <div className="success-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="success-icon">🎉</div>
+            <h2>Purchase Successful!</h2>
+            <img src={purchasedNft.image} alt={purchasedNft.name} />
+            <h3 style={{ color: purchasedNft.color }}>{purchasedNft.name}</h3>
+            <p>You've successfully purchased this warrior!</p>
+            <div className="modal-price">
+              <span className="crypto-icon">Ⓜ</span>
+              {purchasedNft.price} POL
+            </div>
+            <div className="modal-buttons">
+              <Link to="/game" className="play-button">
+                ⚔️ Play Now
+              </Link>
+              <button className="close-button" onClick={() => setShowSuccessModal(false)}>
+                Continue Shopping
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

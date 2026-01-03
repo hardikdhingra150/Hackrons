@@ -1006,3 +1006,276 @@ footer::after {
     transform: translateX(-50%) translateY(-10px);
   }
 }
+/* Scroll indicator - Center alignment */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.scroll-text {
+  color: #ff9500;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5);
+}
+
+.scroll-arrow {
+  color: #ff9500;
+  font-size: 24px;
+  animation: arrowBounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+.scroll-indicator:hover .scroll-text {
+  color: #ffb800;
+}
+
+.scroll-indicator:hover .scroll-arrow {
+  color: #ffb800;
+}
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s;
+}
+
+.scroll-indicator:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.scroll-text {
+  color: #ff9500;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5);
+  animation: textPulse 2s ease-in-out infinite;
+}
+
+.scroll-arrow {
+  color: #ff9500;
+  font-size: 24px;
+  animation: arrowBounce 1.5s ease-in-out infinite;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5);
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+.scroll-indicator:hover .scroll-text {
+  color: #ffb800;
+}
+
+.scroll-indicator:hover .scroll-arrow {
+  color: #ffb800;
+}
+
+/* Make sure hero section has relative positioning */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  /* your other hero styles */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .scroll-indicator {
+    bottom: 30px;
+  }
+
+  .scroll-text {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .scroll-arrow {
+    font-size: 20px;
+  }
+}
+/* Scroll Indicator - FORCE CENTER */
+.scroll-indicator {
+  position: absolute !important;
+  bottom: 40px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  z-index: 100 !important;
+  width: auto !important;
+  text-align: center !important;
+}
+
+.scroll-indicator:hover {
+  transform: translateX(-50%) scale(1.1) !important;
+}
+
+.scroll-text {
+  color: #ff9500 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5) !important;
+  animation: textPulse 2s ease-in-out infinite !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.scroll-arrow {
+  color: #ff9500 !important;
+  font-size: 28px !important;
+  animation: arrowBounce 1.5s ease-in-out infinite !important;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5) !important;
+  display: block !important;
+  text-align: center !important;
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+/* Scroll Indicator - Move up */
+.scroll-indicator {
+  position: absolute !important;
+  bottom: 90px !important; 
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  cursor: pointer !important;
+  z-index: 100 !important;
+  width: auto !important;
+  text-align: center !important;
+}
+
+.scroll-indicator:hover {
+  transform: translateX(-50%) scale(1.1) !important;
+}
+
+.scroll-text {
+  color: #ff9500 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5) !important;
+  animation: textPulse 2s ease-in-out infinite !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+.scroll-arrow {
+  color: #ff9500 !important;
+  font-size: 28px !important;
+  animation: arrowBounce 1.5s ease-in-out infinite !important;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5) !important;
+  display: block !important;
+  text-align: center !important;
+}
+
+@keyframes textPulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .scroll-indicator {
+    bottom: 60px !important; /* Also adjust for mobile */
+  }
+
+  .scroll-text {
+    font-size: 10px !important;
+    letter-spacing: 2px !important;
+  }
+
+  .scroll-arrow {
+    font-size: 24px !important;
+  }
+}

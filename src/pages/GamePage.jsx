@@ -51,18 +51,60 @@ function GamePage({ account }) {
     },
   ]
 
-  // Load owned character from localStorage
+  // Load owned characters from localStorage
   useEffect(() => {
+    loadOwnedCharacters()
+  }, [])
+
+  const loadOwnedCharacters = () => {
+    let allOwned = []
+
+    // 1. Load claimed free character
     const claimedCharacter = localStorage.getItem('claimedFreeCharacter')
     if (claimedCharacter) {
-      const claimed = JSON.parse(claimedCharacter)
-      // Find the full character data
-      const fullCharacterData = allFreeCharacters.find(c => c.id === claimed.id)
-      if (fullCharacterData) {
-        setOwnedCharacters([fullCharacterData])
+      try {
+        const claimed = JSON.parse(claimedCharacter)
+        const fullCharacterData = allFreeCharacters.find(c => c.id === claimed.id)
+        if (fullCharacterData) {
+          allOwned.push(fullCharacterData)
+        }
+      } catch (error) {
+        console.error('Error loading claimed character:', error)
       }
     }
-  }, [])
+
+    // 2. Load purchased characters from marketplace
+    const purchasedCharacters = localStorage.getItem('ownedCharacters')
+    if (purchasedCharacters) {
+      try {
+        const purchased = JSON.parse(purchasedCharacters)
+        if (Array.isArray(purchased)) {
+          // Convert marketplace characters to game format
+          const formattedPurchased = purchased.map(char => ({
+            id: char.id || char.tokenId,
+            name: char.name,
+            attack: char.stats?.attack || 85,
+            defense: char.stats?.defense || 70,
+            speed: char.stats?.speed || 75,
+            health: char.stats?.health || 1000,
+            special: char.stats?.special || 80,
+            image: char.image,
+            rarity: char.rarity,
+            class: char.class,
+            isPurchased: true
+          }))
+          allOwned = [...allOwned, ...formattedPurchased]
+        }
+      } catch (error) {
+        console.error('Error loading purchased characters:', error)
+      }
+    }
+
+    setOwnedCharacters(allOwned)
+  }
+
+  // Show message if no characters owned
+  const hasNoCharacters = ownedCharacters.length === 0
 
   if (activeMode === 'matchmaking') {
     return (
@@ -118,6 +160,14 @@ function GamePage({ account }) {
     )
   }
 
+  const handleModeClick = (mode) => {
+    if (hasNoCharacters) {
+      alert('⚠️ You need at least one character to play!\n\nGet started:\n• Claim 1 FREE character from the Characters page\n• Or buy characters from the Marketplace')
+      return
+    }
+    setActiveMode(mode)
+  }
+
   return (
     <div className="game-page">
       <nav className="main-navbar">
@@ -139,8 +189,44 @@ function GamePage({ account }) {
         <h1 className="game-title">⚔️ Battle Arena</h1>
         <p className="game-subtitle">Choose your game mode and prove your worth</p>
 
+        {/* No Characters Warning */}
+        {hasNoCharacters && (
+          <div className="no-characters-warning">
+            <div className="warning-icon">⚠️</div>
+            <h3>No Characters Available</h3>
+            <p>You need at least one character to start playing!</p>
+            <div className="warning-actions">
+              <Link to="/characters" className="warning-btn primary">
+                🎁 Claim Free Character
+              </Link>
+              <Link to="/marketplace" className="warning-btn secondary">
+                🛒 Buy from Marketplace
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Character Collection Preview */}
+        {!hasNoCharacters && (
+          <div className="owned-characters-preview">
+            <h3>Your Arsenal ({ownedCharacters.length} {ownedCharacters.length === 1 ? 'Character' : 'Characters'})</h3>
+            <div className="characters-preview-grid">
+              {ownedCharacters.map((char) => (
+                <div key={char.id} className="preview-character-card">
+                  <img src={char.image} alt={char.name} />
+                  <span className="preview-name">{char.name}</span>
+                  {char.isPurchased && <span className="purchased-badge">💎</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="game-modes-grid">
-          <div className="game-mode-card" onClick={() => setActiveMode('matchmaking')}>
+          <div 
+            className={`game-mode-card ${hasNoCharacters ? 'disabled' : ''}`} 
+            onClick={() => handleModeClick('matchmaking')}
+          >
             <div className="mode-icon">⚔️</div>
             <h2>Quick Match</h2>
             <p>Jump into a fast-paced 1v1 battle against AI opponents</p>
@@ -149,10 +235,15 @@ function GamePage({ account }) {
               <span>⏱️ 5-10 min</span>
               <span>💰 Rewards</span>
             </div>
-            <button className="mode-play-btn">Play Now</button>
+            <button className="mode-play-btn" disabled={hasNoCharacters}>
+              Play Now
+            </button>
           </div>
 
-          <div className="game-mode-card" onClick={() => setActiveMode('matchmaking')}>
+          <div 
+            className={`game-mode-card ${hasNoCharacters ? 'disabled' : ''}`}
+            onClick={() => handleModeClick('matchmaking')}
+          >
             <div className="mode-icon">🏆</div>
             <h2>Ranked Match</h2>
             <p>Compete for leaderboard positions and climb the ranks</p>
@@ -161,10 +252,15 @@ function GamePage({ account }) {
               <span>⏱️ 5-10 min</span>
               <span>⭐ ELO Points</span>
             </div>
-            <button className="mode-play-btn">Enter Ranked</button>
+            <button className="mode-play-btn" disabled={hasNoCharacters}>
+              Enter Ranked
+            </button>
           </div>
 
-          <div className="game-mode-card" onClick={() => setActiveMode('tournament')}>
+          <div 
+            className={`game-mode-card ${hasNoCharacters ? 'disabled' : ''}`}
+            onClick={() => handleModeClick('tournament')}
+          >
             <div className="mode-icon">🎯</div>
             <h2>Tournaments</h2>
             <p>Join epic multi-round tournaments and win huge prizes</p>
@@ -173,10 +269,14 @@ function GamePage({ account }) {
               <span>⏱️ 1-2 hours</span>
               <span>💎 Big Prizes</span>
             </div>
-            <button className="mode-play-btn">View Tournaments</button>
+            <button className="mode-play-btn" disabled={hasNoCharacters}>
+              View Tournaments
+            </button>
           </div>
 
-          <div className="game-mode-card">
+          <div 
+            className={`game-mode-card ${hasNoCharacters ? 'disabled' : ''}`}
+          >
             <div className="mode-icon">🎓</div>
             <h2>Practice Mode</h2>
             <p>Train your skills against dummy opponents</p>
@@ -185,7 +285,11 @@ function GamePage({ account }) {
               <span>⏱️ Unlimited</span>
               <span>📚 Learn</span>
             </div>
-            <button className="mode-play-btn" onClick={() => setActiveMode('matchmaking')}>
+            <button 
+              className="mode-play-btn" 
+              onClick={() => handleModeClick('matchmaking')}
+              disabled={hasNoCharacters}
+            >
               Start Training
             </button>
           </div>

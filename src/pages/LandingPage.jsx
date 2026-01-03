@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../styles/landing.css'
 
 function LandingPage({ account, setAccount }) {
+  const navigate = useNavigate()
+
   const handleConnectOrCopy = async () => {
     // Not connected yet → open MetaMask
     if (!account) {
@@ -24,10 +26,31 @@ function LandingPage({ account, setAccount }) {
     // Already connected → copy to clipboard
     try {
       await navigator.clipboard.writeText(account)
-      console.log('Copied address:', account)
+      // Show a temporary notification
+      const btn = document.querySelector('.connect-button')
+      const originalText = btn.textContent
+      btn.textContent = '✓ Copied!'
+      setTimeout(() => {
+        btn.textContent = originalText
+      }, 1500)
     } catch (e) {
       console.log('Clipboard failed:', e)
     }
+  }
+
+  const handleEnterArena = () => {
+    if (!account) {
+      alert('⚠️ Please connect your wallet first!\n\nClick the "Connect Wallet" button in the top right corner.')
+      return
+    }
+    navigate('/game')
+  }
+
+  const handleScrollDown = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    })
   }
 
   const label = account
@@ -44,7 +67,7 @@ function LandingPage({ account, setAccount }) {
           <li><Link to="/marketplace">Marketplace</Link></li>
           <li><Link to="/game">Game</Link></li>
           <li><Link to="/leaderboard">Leaderboard</Link></li>
-          <Link to="/faq">FAQ & RULES</Link>
+          <li><Link to="/faq">FAQ & RULES</Link></li>
         </ul>
         <button className="connect-button" onClick={handleConnectOrCopy}>
           {label}
@@ -60,13 +83,13 @@ function LandingPage({ account, setAccount }) {
             Collect legendary warriors from across time. Battle in time portals. 
             Earn & trade rare NFT heroes.
           </p>
-          <Link to="/mint">
-            <button className="cta-button">▶ ENTER THE ARENA</button>
-          </Link>
+          <button className="cta-button" onClick={handleEnterArena}>
+            ▶ ENTER THE ARENA
+          </button>
         </div>
 
-        <div className="scroll-indicator">
-          <div className="scroll-text">Scroll to Explore</div>
+        <div className="scroll-indicator" onClick={handleScrollDown}>
+          <div className="scroll-text">SCROLL TO EXPLORE</div>
           <div className="scroll-arrow">↓</div>
         </div>
       </section>

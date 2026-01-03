@@ -1,0 +1,238 @@
+/* Additional Marketplace Styles */
+
+.nft-description {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 10px 0;
+    line-height: 1.4;
+  }
+  
+  .crypto-icon {
+    font-size: 20px;
+    margin-right: 5px;
+    filter: drop-shadow(0 2px 5px rgba(255, 149, 0, 0.5));
+  }
+  
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-top-color: #000;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Modals */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s;
+  }
+  
+  .confirm-modal, .success-modal {
+    background: linear-gradient(135deg, #2d1810, #3c1e0f);
+    border: 3px solid #ff9500;
+    border-radius: 25px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: slideUp 0.4s;
+  }
+  
+  .success-modal {
+    border-color: #00ff88;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .confirm-modal h2, .success-modal h2 {
+    color: #ff9500;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 900;
+  }
+  
+  .success-modal h2 {
+    color: #00ff88;
+  }
+  
+  .modal-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 3px solid #ff9500;
+  }
+  
+  .success-modal img {
+    border-color: #00ff88;
+  }
+  
+  .confirm-modal h3, .success-modal h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 800;
+  }
+  
+  .modal-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .modal-stats {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+  }
+  
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #fff;
+    font-size: 15px;
+  }
+  
+  .stat-row span:first-child {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .stat-row span:last-child {
+    color: #ff9500;
+    font-weight: 800;
+  }
+  
+  .modal-price {
+    background: linear-gradient(135deg, rgba(255, 149, 0, 0.2), rgba(255, 149, 0, 0.05));
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 149, 0, 0.3);
+  }
+  
+  .modal-price .price-label {
+    display: block;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+  }
+  
+  .modal-price .price-value {
+    font-size: 28px;
+    color: #ff9500;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+  }
+  
+  .cancel-btn, .confirm-btn, .play-button, .close-button {
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    border: none;
+  }
+  
+  .cancel-btn, .close-button {
+    background: linear-gradient(135deg, #5a3825, #6b4530);
+    color: #fff;
+  }
+  
+  .cancel-btn:hover, .close-button:hover {
+    background: linear-gradient(135deg, #6b4530, #7c543b);
+    transform: translateY(-2px);
+  }
+  
+  .confirm-btn {
+    background: linear-gradient(135deg, #ff9500, #ffb800);
+    color: #000;
+  }
+  
+  .confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 149, 0, 0.5);
+  }
+  
+  .play-button {
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .play-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 255, 136, 0.5);
+  }
+  
+  .success-icon {
+    font-size: 80px;
+    animation: bounce 1s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .confirm-modal, .success-modal {
+      padding: 30px 20px;
+    }
+  
+    .modal-buttons {
+      flex-direction: column;
+    }
+  
+    .modal-image {
+      width: 150px;
+      height: 150px;
+    }
+  }
+  
