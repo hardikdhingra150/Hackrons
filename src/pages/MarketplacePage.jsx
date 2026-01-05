@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-//import { ethers } from 'ethers'
 import TiltCard from '../components/TiltCard'
 import TokenPriceChart from '../components/TokenPriceChart'
 import '../styles/landing.css'
@@ -363,8 +362,25 @@ function MarketplacePage({ account }) {
   const [filterRarity, setFilterRarity] = useState('all')
   const [filterClass, setFilterClass] = useState('all')
   const [sortBy, setSortBy] = useState('price-low')
+  const [ownedCharacterIds, setOwnedCharacterIds] = useState([])
 
   const shortAddress = account && `${account.slice(0, 6)}...${account.slice(-4)}`
+
+  // Load owned characters on mount
+  useEffect(() => {
+    loadOwnedCharacters()
+  }, [])
+
+  const loadOwnedCharacters = () => {
+    const owned = JSON.parse(localStorage.getItem('ownedCharacters') || '[]')
+    const ids = owned.map(char => char.id)
+    setOwnedCharacterIds(ids)
+  }
+
+  // Check if character is already owned
+  const isCharacterOwned = (characterId) => {
+    return ownedCharacterIds.includes(characterId)
+  }
 
   // Filter and sort NFTs
   const filteredNfts = allNfts
@@ -389,13 +405,26 @@ function MarketplacePage({ account }) {
   const visibleNfts = showFull ? filteredNfts : filteredNfts.slice(0, 6)
 
   const handleBuyClick = (nft) => {
+    // Check if already owned
+    if (isCharacterOwned(nft.id)) {
+      alert('⚠️ You already own this character!\n\nCheck your collection in the Game page.')
+      return
+    }
+
     setSelectedNft(nft)
     setShowModal(true)
   }
 
   const confirmPurchase = async () => {
     if (!account) {
-      alert('Please connect your wallet first!')
+      alert('⚠️ Please connect your wallet first!\n\nClick the "Connect Wallet" button at the top right.')
+      return
+    }
+
+    // Double check ownership
+    if (isCharacterOwned(selectedNft.id)) {
+      alert('⚠️ You already own this character!')
+      setShowModal(false)
       return
     }
 
@@ -403,8 +432,15 @@ function MarketplacePage({ account }) {
     setShowModal(false)
 
     try {
-      // Simulate blockchain transaction
-      // In production, replace with actual smart contract call
+      // Check if MetaMask is installed
+      if (!window.ethereum) {
+        throw new Error('Please install MetaMask to purchase characters!')
+      }
+
+      // Show payment processing message
+      alert(`💰 Processing payment of ${selectedNft.price} POL...\n\n⏳ Please wait while we process your transaction.`)
+
+      // Simulate blockchain transaction with delay
       await mockPurchase(selectedNft)
       
       // Save to localStorage
@@ -413,10 +449,14 @@ function MarketplacePage({ account }) {
         ...selectedNft,
         tokenId: selectedNft.id,
         purchasedAt: new Date().toISOString(),
-        owner: account
+        owner: account,
+        transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`
       }
       ownedCharacters.push(newCharacter)
       localStorage.setItem('ownedCharacters', JSON.stringify(ownedCharacters))
+
+      // Update owned character IDs
+      loadOwnedCharacters()
 
       // Show success
       setPurchasedNft(selectedNft)
@@ -425,7 +465,20 @@ function MarketplacePage({ account }) {
 
     } catch (error) {
       console.error('Purchase failed:', error)
-      alert('Purchase failed: ' + error.message)
+      
+      let errorMessage = '❌ Purchase Failed\n\n'
+      
+      if (error.message.includes('MetaMask')) {
+        errorMessage += 'Please install MetaMask browser extension to continue.'
+      } else if (error.message.includes('insufficient funds')) {
+        errorMessage += `You don't have enough POL in your wallet.\n\nRequired: ${selectedNft.price} POL`
+      } else if (error.message.includes('rejected')) {
+        errorMessage += 'You cancelled the transaction.'
+      } else {
+        errorMessage += error.message || 'Please try again later.'
+      }
+      
+      alert(errorMessage)
       setBuyingId(null)
     }
   }
@@ -433,33 +486,15 @@ function MarketplacePage({ account }) {
   const mockPurchase = (nft) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        // Simulate 95% success rate
-        if (Math.random() > 0.05) {
+        // Simulate 90% success rate
+        if (Math.random() > 0.1) {
           resolve()
         } else {
-          reject(new Error('Transaction failed'))
+          reject(new Error('Transaction failed. Please try again.'))
         }
-      }, 2000)
+      }, 3000) // 3 second delay to simulate real transaction
     })
   }
-
-  // Real blockchain purchase function (for when contract is deployed)
-  //const realPurchase = async (nft) => {
-    //const provider = new ethers.BrowserProvider(window.ethereum)
-    //const signer = await provider.getSigner()
-    
-    // Your contract details
-    //const CONTRACT_ADDRESS = "YOUR_CONTRACT_ADDRESS"
-    //const CONTRACT_ABI = [
-      //"function buyCharacter(uint256 tokenId) public payable"
-    //]
-    
-   // const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer)
-    //const priceInWei = ethers.parseEther(nft.price)
-    
-    //const tx = await contract.buyCharacter(nft.id, { value: priceInWei })
-    //await tx.wait()
-  //}
 
   return (
     <div>
@@ -497,6 +532,14 @@ function MarketplacePage({ account }) {
               ? 'Browse the complete arsenal of Hackrons warriors'
               : 'Explore rare warriors from across time'}
           </p>
+
+          {/* Show owned count */}
+          {ownedCharacterIds.length > 0 && (
+            <div className="owned-count-banner">
+              <span>💎 You own {ownedCharacterIds.length} character{ownedCharacterIds.length > 1 ? 's' : ''}</span>
+              <Link to="/game" className="view-collection-link">View Collection →</Link>
+            </div>
+          )}
 
           {/* Filters - Show only in full view */}
           {showFull && (
@@ -540,12 +583,15 @@ function MarketplacePage({ account }) {
           <div className="nft-grid">
             {visibleNfts.map((nft) => (
               <TiltCard key={nft.id} maxTilt={15}>
-                <div className="nft-card">
+                <div className={`nft-card ${isCharacterOwned(nft.id) ? 'owned' : ''}`}>
                   <div className="nft-image">
                     <img src={nft.image} alt={nft.name} />
                     <span className={`nft-rarity ${nft.rarity.toLowerCase()}`}>
                       {nft.rarity}
                     </span>
+                    {isCharacterOwned(nft.id) && (
+                      <div className="owned-badge">✓ OWNED</div>
+                    )}
                   </div>
                   <div className="nft-info">
                     <h3 className="nft-name" style={{ color: nft.color }}>
@@ -568,9 +614,11 @@ function MarketplacePage({ account }) {
                     <button 
                       className="nft-buy-btn"
                       onClick={() => handleBuyClick(nft)}
-                      disabled={buyingId === nft.id}
+                      disabled={buyingId === nft.id || isCharacterOwned(nft.id)}
                     >
-                      {buyingId === nft.id ? (
+                      {isCharacterOwned(nft.id) ? (
+                        <>✓ Owned</>
+                      ) : buyingId === nft.id ? (
                         <>
                           <span className="spinner"></span>
                           Processing...
@@ -637,6 +685,10 @@ function MarketplacePage({ account }) {
               </span>
             </div>
 
+            <div className="modal-info">
+              ⚠️ This will deduct {selectedNft.price} POL from your wallet
+            </div>
+
             <div className="modal-buttons">
               <button className="cancel-btn" onClick={() => setShowModal(false)}>
                 Cancel
@@ -650,29 +702,60 @@ function MarketplacePage({ account }) {
       )}
 
       {/* Success Modal */}
-      {showSuccessModal && purchasedNft && (
-        <div className="modal-overlay" onClick={() => setShowSuccessModal(false)}>
-          <div className="success-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="success-icon">🎉</div>
-            <h2>Purchase Successful!</h2>
-            <img src={purchasedNft.image} alt={purchasedNft.name} />
-            <h3 style={{ color: purchasedNft.color }}>{purchasedNft.name}</h3>
-            <p>You've successfully purchased this warrior!</p>
-            <div className="modal-price">
-              <span className="crypto-icon">Ⓜ</span>
-              {purchasedNft.price} POL
-            </div>
-            <div className="modal-buttons">
-              <Link to="/game" className="play-button">
-                ⚔️ Play Now
-              </Link>
-              <button className="close-button" onClick={() => setShowSuccessModal(false)}>
-                Continue Shopping
-              </button>
-            </div>
-          </div>
+{showSuccessModal && purchasedNft && (
+  <div className="modal-overlay" onClick={() => setShowSuccessModal(false)}>
+    <div className="success-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="success-icon">🎉</div>
+      <h2>Purchase Successful!</h2>
+      
+      <img src={purchasedNft.image} alt={purchasedNft.name} />
+      
+      <h3 style={{ color: purchasedNft.color }}>
+        {purchasedNft.icon} {purchasedNft.name}
+      </h3>
+      
+      <p>Congratulations! You now own this legendary warrior!</p>
+      
+      <div className="transaction-details">
+        <div className="detail-row">
+          <span className="detail-label">Character Class:</span>
+          <span className="detail-value">{purchasedNft.class}</span>
         </div>
-      )}
+        <div className="detail-row">
+          <span className="detail-label">Rarity:</span>
+          <span className="detail-value">{purchasedNft.rarity}</span>
+        </div>
+        <div className="detail-row">
+          <span className="detail-label">Purchase Time:</span>
+          <span className="detail-value">{new Date().toLocaleTimeString()}</span>
+        </div>
+      </div>
+
+      <div className="modal-price">
+        <div className="price-label" style={{ fontSize: '14px', marginBottom: '10px', color: 'rgba(255,255,255,0.6)' }}>
+          Amount Paid
+        </div>
+        <div className="price-value">
+          <span className="crypto-icon">Ⓜ</span>
+          {purchasedNft.price} POL
+        </div>
+      </div>
+
+      <div className="modal-buttons">
+        <Link to="/game" className="play-button">
+          ⚔️ Play Now
+        </Link>
+        <button className="close-button" onClick={() => {
+          setShowSuccessModal(false)
+          loadOwnedCharacters()
+        }}>
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   )
 }
