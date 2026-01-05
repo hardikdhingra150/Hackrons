@@ -79,15 +79,15 @@ function GamePage({ account }) {
       try {
         const purchased = JSON.parse(purchasedCharacters)
         if (Array.isArray(purchased)) {
-          // Convert marketplace characters to game format
+          // ← FIXED: Multiply health by 10 to match battle format
           const formattedPurchased = purchased.map(char => ({
             id: char.id || char.tokenId,
             name: char.name,
             attack: char.stats?.attack || 85,
             defense: char.stats?.defense || 70,
             speed: char.stats?.speed || 75,
-            health: char.stats?.health || 1000,
-            special: char.stats?.special || 80,
+            health: (char.stats?.health || 100) * 10, // ← MULTIPLY BY 10!
+            special: 85,
             image: char.image,
             rarity: char.rarity,
             class: char.class,
@@ -325,7 +325,6 @@ function GamePage({ account }) {
         <div className="player-stats-card">
           <h3>Your Stats</h3>
           
-          {/* ← ADD THIS: POL Balance Display */}
           <div className="pol-balance-display">
             <span className="pol-icon">💰</span>
             <div className="pol-info">

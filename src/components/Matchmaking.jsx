@@ -33,25 +33,242 @@ const Matchmaking = ({ account, ownedCharacters, onBack }) => {
   const { stats, updateAfterBattle } = useStats()
 
   const mockOpponents = [
-    { name: 'Genesis Samurai', character: { id: 10, name: 'Genesis Samurai', attack: 88, defense: 68, speed: 82, health: 980, special: 85, image: character1 }},
-    { name: 'Royal Knight', character: { id: 11, name: 'Royal Knight', attack: 92, defense: 70, speed: 88, health: 950, special: 90, image: character2 }},
-    { name: 'Void Marine', character: { id: 12, name: 'Void Marine', attack: 78, defense: 92, speed: 65, health: 1250, special: 75, image: character3 }},
-    { name: 'Shadow Samurai', character: { id: 13, name: 'Shadow Samurai', attack: 95, defense: 60, speed: 80, health: 900, special: 98, image: character4 }},
-    { name: 'Chrono Guardian', character: { id: 14, name: 'Chrono Guardian', attack: 85, defense: 75, speed: 78, health: 1050, special: 88, image: character5 }},
-    { name: 'Void Assassin', character: { id: 15, name: 'Void Assassin', attack: 90, defense: 72, speed: 85, health: 1000, special: 92, image: character6 }},
-    { name: 'Shadow Blade', character: { id: 16, name: 'Shadow Blade', attack: 100, defense: 80, speed: 70, health: 1100, special: 95, image: character7 }},
-    { name: 'Archer Knight', character: { id: 17, name: 'Archer Knight', attack: 82, defense: 78, speed: 75, health: 1080, special: 90, image: character8 }},
-    { name: 'Holy Paladin', character: { id: 18, name: 'Holy Paladin', attack: 93, defense: 65, speed: 90, health: 920, special: 94, image: character9 }},
-    { name: 'Quantum Warrior', character: { id: 19, name: 'Quantum Warrior', attack: 80, defense: 88, speed: 68, health: 1200, special: 82, image: character10 }},
-    { name: 'Rogue Ninja', character: { id: 20, name: 'Rogue Ninja', attack: 96, defense: 62, speed: 95, health: 890, special: 91, image: character11 }},
-    { name: 'Sentinel Knight', character: { id: 21, name: 'Sentinel Knight', attack: 84, defense: 86, speed: 72, health: 1150, special: 80, image: character12 }},
-    { name: 'Blaze Samurai', character: { id: 22, name: 'Blaze Samurai', attack: 94, defense: 68, speed: 84, health: 970, special: 89, image: character13 }},
-    { name: 'Nebula Marine', character: { id: 23, name: 'Nebula Marine', attack: 76, defense: 82, speed: 78, health: 1100, special: 84, image: character14 }},
-    { name: 'Titan Knight', character: { id: 24, name: 'Titan Knight', attack: 86, defense: 80, speed: 88, health: 1020, special: 93, image: character15 }},
-    { name: 'Cyber Ronin', character: { id: 25, name: 'Cyber Ronin', attack: 98, defense: 66, speed: 82, health: 940, special: 96, image: character16 }},
-    { name: 'Phantom Marine', character: { id: 26, name: 'Phantom Marine', attack: 87, defense: 76, speed: 74, health: 1080, special: 81, image: character17 }},
-    { name: 'Meteor Knight', character: { id: 27, name: 'Meteor Knight', attack: 92, defense: 74, speed: 76, health: 1060, special: 88, image: character18 }},
+    { 
+      name: 'Genesis Samurai', 
+      character: { 
+        id: 10, 
+        name: 'Genesis Samurai', 
+        attack: 95,  // ← From marketplace
+        defense: 70, 
+        speed: 85, 
+        health: 1000, // ← 100 × 10
+        special: 85, 
+        image: character1 
+      }
+    },
+    { 
+      name: 'Royal Knight', 
+      character: { 
+        id: 11, 
+        name: 'Royal Knight', 
+        attack: 75, 
+        defense: 95, 
+        speed: 60, 
+        health: 1200, // ← 120 × 10
+        special: 90, 
+        image: character2 
+      }
+    },
+    { 
+      name: 'Void Marine', 
+      character: { 
+        id: 12, 
+        name: 'Void Marine', 
+        attack: 85, 
+        defense: 65, 
+        speed: 90, 
+        health: 900, // ← 90 × 10
+        special: 75, 
+        image: character3 
+      }
+    },
+    { 
+      name: 'Shadow Samurai', 
+      character: { 
+        id: 13, 
+        name: 'Shadow Samurai', 
+        attack: 90, 
+        defense: 65, 
+        speed: 95, 
+        health: 850, // ← 85 × 10
+        special: 98, 
+        image: character4 
+      }
+    },
+    { 
+      name: 'Chrono Guardian', 
+      character: { 
+        id: 14, 
+        name: 'Chrono Guardian', 
+        attack: 70, 
+        defense: 85, 
+        speed: 65, 
+        health: 1000, // ← 100 × 10
+        special: 88, 
+        image: character5 
+      }
+    },
+    { 
+      name: 'Void Assassin', 
+      character: { 
+        id: 15, 
+        name: 'Void Assassin', 
+        attack: 88, 
+        defense: 60, 
+        speed: 92, 
+        health: 800, // ← 80 × 10
+        special: 92, 
+        image: character6 
+      }
+    },
+    { 
+      name: 'Shadow Blade', 
+      character: { 
+        id: 16, 
+        name: 'Shadow Blade', 
+        attack: 82, 
+        defense: 68, 
+        speed: 88, 
+        health: 850, // ← 85 × 10
+        special: 95, 
+        image: character7 
+      }
+    },
+    { 
+      name: 'Archer Knight', 
+      character: { 
+        id: 17, 
+        name: 'Archer Knight', 
+        attack: 78, 
+        defense: 75, 
+        speed: 70, 
+        health: 900, // ← 90 × 10
+        special: 90, 
+        image: character8 
+      }
+    },
+    { 
+      name: 'Holy Paladin', 
+      character: { 
+        id: 18, 
+        name: 'Holy Paladin', 
+        attack: 80, 
+        defense: 92, 
+        speed: 62, 
+        health: 1150, // ← 115 × 10
+        special: 94, 
+        image: character9 
+      }
+    },
+    { 
+      name: 'Quantum Warrior', 
+      character: { 
+        id: 19, 
+        name: 'Quantum Warrior', 
+        attack: 92, 
+        defense: 75, 
+        speed: 88, 
+        health: 1050, // ← 105 × 10
+        special: 82, 
+        image: character10 
+      }
+    },
+    { 
+      name: 'Rogue Ninja', 
+      character: { 
+        id: 20, 
+        name: 'Rogue Ninja', 
+        attack: 80, 
+        defense: 62, 
+        speed: 93, 
+        health: 750, // ← 75 × 10
+        special: 91, 
+        image: character11 
+      }
+    },
+    { 
+      name: 'Sentinel Knight', 
+      character: { 
+        id: 21, 
+        name: 'Sentinel Knight', 
+        attack: 72, 
+        defense: 98, 
+        speed: 58, 
+        health: 1250, // ← 125 × 10
+        special: 80, 
+        image: character12 
+      }
+    },
+    { 
+      name: 'Blaze Samurai', 
+      character: { 
+        id: 22, 
+        name: 'Blaze Samurai', 
+        attack: 87, 
+        defense: 66, 
+        speed: 82, 
+        health: 880, // ← 88 × 10
+        special: 89, 
+        image: character13 
+      }
+    },
+    { 
+      name: 'Nebula Marine', 
+      character: { 
+        id: 23, 
+        name: 'Nebula Marine', 
+        attack: 94, 
+        defense: 78, 
+        speed: 86, 
+        health: 1100, // ← 110 × 10
+        special: 84, 
+        image: character14 
+      }
+    },
+    { 
+      name: 'Titan Knight', 
+      character: { 
+        id: 24, 
+        name: 'Titan Knight', 
+        attack: 88, 
+        defense: 100, 
+        speed: 55, 
+        health: 1300, // ← 130 × 10
+        special: 93, 
+        image: character15 
+      }
+    },
+    { 
+      name: 'Cyber Ronin', 
+      character: { 
+        id: 25, 
+        name: 'Cyber Ronin', 
+        attack: 84, 
+        defense: 70, 
+        speed: 87, 
+        health: 820, // ← 82 × 10
+        special: 96, 
+        image: character16 
+      }
+    },
+    { 
+      name: 'Phantom Marine', 
+      character: { 
+        id: 26, 
+        name: 'Phantom Marine', 
+        attack: 86, 
+        defense: 63, 
+        speed: 91, 
+        health: 780, // ← 78 × 10
+        special: 81, 
+        image: character17 
+      }
+    },
+    { 
+      name: 'Meteor Knight', 
+      character: { 
+        id: 27, 
+        name: 'Meteor Knight', 
+        attack: 76, 
+        defense: 82, 
+        speed: 68, 
+        health: 950, // ← 95 × 10
+        special: 88, 
+        image: character18 
+      }
+    },
   ]
+  
 
   const startMatchmaking = () => {
     if (!selectedCharacter) return
