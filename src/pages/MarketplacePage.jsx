@@ -602,43 +602,7 @@ function MarketplacePage({ account }) {
             </div>
           )}
 
-          {showFull && (
-            <div className="marketplace-filters">
-              <div className="filter-group">
-                <label>Rarity:</label>
-                <select value={filterRarity} onChange={(e) => setFilterRarity(e.target.value)}>
-                  <option value="all">All</option>
-                  <option value="legendary">Legendary</option>
-                  <option value="epic">Epic</option>
-                  <option value="rare">Rare</option>
-                </select>
-              </div>
-
-              <div className="filter-group">
-                <label>Class:</label>
-                <select value={filterClass} onChange={(e) => setFilterClass(e.target.value)}>
-                  <option value="all">All</option>
-                  <option value="samurai">Samurai</option>
-                  <option value="knight">Knight</option>
-                  <option value="marine">Marine</option>
-                </select>
-              </div>
-
-              <div className="filter-group">
-                <label>Sort:</label>
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name">Name</option>
-                  <option value="rarity">Rarity</option>
-                </select>
-              </div>
-
-              <div className="results-count">
-                {filteredNfts.length} characters available
-              </div>
-            </div>
-          )}
+          
 
           <div className="nft-grid">
             {visibleNfts.map((nft) => {
