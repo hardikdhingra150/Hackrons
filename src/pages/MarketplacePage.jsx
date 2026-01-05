@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TiltCard from '../components/TiltCard'
 import TokenPriceChart from '../components/TokenPriceChart'
+import { useStats } from '../context/StatsContext' // ← ADD THIS IMPORT
 import '../styles/landing.css'
 import '../styles/components.css'
 import '../styles/marketplace.css'
@@ -30,7 +31,7 @@ const allNfts = [
     id: 1,
     name: 'Genesis Samurai',
     class: 'Samurai',
-    price: '2.5', // Increased price
+    price: '2.5',
     rarity: 'Legendary',
     image: character1,
     color: '#FF006E',
@@ -370,7 +371,6 @@ const allNfts = [
   }
 ]
 
-
 function MarketplacePage({ account }) {
   const [showFull, setShowFull] = useState(false)
   const [buyingId, setBuyingId] = useState(null)
@@ -383,9 +383,28 @@ function MarketplacePage({ account }) {
   const [sortBy, setSortBy] = useState('price-low')
   const [ownedCharacterIds, setOwnedCharacterIds] = useState([])
 
+  // ← ADD THIS: Get stats and deductPol from context
+  const { stats, deductPol } = useStats()
+
   const shortAddress = account && `${account.slice(0, 6)}...${account.slice(-4)}`
 
-  // Load owned characters on mount
+  // ← ADD THIS FUNCTION: Check if character can be unlocked
+  const canUnlockCharacter = (character) => {
+    if (!character.unlockRequirements) return { canUnlock: true }
+    
+    const req = character.unlockRequirements
+    const playerPol = parseFloat(stats.polBalance || 0)
+    
+    return {
+      canUnlock: stats.wins >= req.battlesWon && 
+                 stats.level >= req.level && 
+                 playerPol >= req.polRequired,
+      battlesNeeded: Math.max(0, req.battlesWon - stats.wins),
+      levelNeeded: Math.max(0, req.level - stats.level),
+      polNeeded: Math.max(0, req.polRequired - playerPol)
+    }
+  }
+
   useEffect(() => {
     loadOwnedCharacters()
   }, [])
@@ -396,12 +415,10 @@ function MarketplacePage({ account }) {
     setOwnedCharacterIds(ids)
   }
 
-  // Check if character is already owned
   const isCharacterOwned = (characterId) => {
     return ownedCharacterIds.includes(characterId)
   }
 
-  // Filter and sort NFTs
   const filteredNfts = allNfts
     .filter(nft => filterRarity === 'all' || nft.rarity.toLowerCase() === filterRarity)
     .filter(nft => filterClass === 'all' || nft.class.toLowerCase() === filterClass)
@@ -423,26 +440,58 @@ function MarketplacePage({ account }) {
 
   const visibleNfts = showFull ? filteredNfts : filteredNfts.slice(0, 6)
 
+  // ← UPDATE THIS FUNCTION
   const handleBuyClick = (nft) => {
-    // Check if already owned
     if (isCharacterOwned(nft.id)) {
       alert('⚠️ You already own this character!\n\nCheck your collection in the Game page.')
+      return
+    }
+
+    // Check unlock requirements
+    const unlockStatus = canUnlockCharacter(nft)
+    
+    if (!unlockStatus.canUnlock) {
+      let message = '🔒 CHARACTER LOCKED!\n\nRequirements to unlock:\n\n'
+      
+      if (unlockStatus.battlesNeeded > 0) {
+        message += `⚔️ Win ${unlockStatus.battlesNeeded} more battles\n`
+      }
+      
+      if (unlockStatus.levelNeeded > 0) {
+        message += `📈 Reach Level ${nft.unlockRequirements.level}\n`
+      }
+      
+      if (unlockStatus.polNeeded > 0) {
+        message += `💰 Earn ${unlockStatus.polNeeded.toFixed(2)} more POL\n`
+      }
+      
+      message += `\n🎯 Achievement: ${nft.unlockRequirements.achievement}`
+      
+      alert(message)
       return
     }
 
     setSelectedNft(nft)
     setShowModal(true)
   }
-
+  
+  // ← UPDATE THIS FUNCTION
   const confirmPurchase = async () => {
     if (!account) {
       alert('⚠️ Please connect your wallet first!\n\nClick the "Connect Wallet" button at the top right.')
       return
     }
 
-    // Double check ownership
     if (isCharacterOwned(selectedNft.id)) {
       alert('⚠️ You already own this character!')
+      setShowModal(false)
+      return
+    }
+
+    // Check requirements again
+    const unlockStatus = canUnlockCharacter(selectedNft)
+    if (!unlockStatus.canUnlock) {
+      alert('❌ You don\'t meet the requirements!')
       setShowModal(false)
       return
     }
@@ -451,18 +500,17 @@ function MarketplacePage({ account }) {
     setShowModal(false)
 
     try {
-      // Check if MetaMask is installed
       if (!window.ethereum) {
         throw new Error('Please install MetaMask to purchase characters!')
       }
 
-      // Show payment processing message
       alert(`💰 Processing payment of ${selectedNft.price} POL...\n\n⏳ Please wait while we process your transaction.`)
 
-      // Simulate blockchain transaction with delay
       await mockPurchase(selectedNft)
       
-      // Save to localStorage
+      // Deduct POL from balance
+      deductPol(parseFloat(selectedNft.price))
+      
       const ownedCharacters = JSON.parse(localStorage.getItem('ownedCharacters') || '[]')
       const newCharacter = {
         ...selectedNft,
@@ -474,10 +522,7 @@ function MarketplacePage({ account }) {
       ownedCharacters.push(newCharacter)
       localStorage.setItem('ownedCharacters', JSON.stringify(ownedCharacters))
 
-      // Update owned character IDs
       loadOwnedCharacters()
-
-      // Show success
       setPurchasedNft(selectedNft)
       setShowSuccessModal(true)
       setBuyingId(null)
@@ -501,23 +546,21 @@ function MarketplacePage({ account }) {
       setBuyingId(null)
     }
   }
-
+  
   const mockPurchase = (nft) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        // Simulate 90% success rate
         if (Math.random() > 0.1) {
           resolve()
         } else {
           reject(new Error('Transaction failed. Please try again.'))
         }
-      }, 3000) // 3 second delay to simulate real transaction
+      }, 3000)
     })
   }
 
   return (
     <div>
-      {/* Navbar */}
       <nav>
         <Link to="/" className="logo">⚡ HACKRONS</Link>
         <ul className="nav-links">
@@ -533,15 +576,7 @@ function MarketplacePage({ account }) {
         </button>
       </nav>
 
-      {/* Content */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          minHeight: '100vh',
-          paddingTop: '40px',
-        }}
-      >
+      <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', paddingTop: '40px' }}>
         <section className="nft-gallery">
           <h2 className="gallery-title">
             {showFull ? '🛒 Full Marketplace' : '⭐ Featured NFTs'}
@@ -552,7 +587,14 @@ function MarketplacePage({ account }) {
               : 'Explore rare warriors from across time'}
           </p>
 
-          {/* Show owned count */}
+          {/* ← ADD THIS: Show POL Balance */}
+          <div className="marketplace-pol-display">
+            <span className="pol-icon">💰</span>
+            <span className="pol-amount">{stats.polBalance.toFixed(2)} POL</span>
+            <span className="pol-label">Your Balance</span>
+            <span className="pol-hint">Win battles to earn more POL!</span>
+          </div>
+
           {ownedCharacterIds.length > 0 && (
             <div className="owned-count-banner">
               <span>💎 You own {ownedCharacterIds.length} character{ownedCharacterIds.length > 1 ? 's' : ''}</span>
@@ -560,7 +602,6 @@ function MarketplacePage({ account }) {
             </div>
           )}
 
-          {/* Filters - Show only in full view */}
           {showFull && (
             <div className="marketplace-filters">
               <div className="filter-group">
@@ -600,59 +641,100 @@ function MarketplacePage({ account }) {
           )}
 
           <div className="nft-grid">
-            {visibleNfts.map((nft) => (
-              <TiltCard key={nft.id} maxTilt={15}>
-                <div className={`nft-card ${isCharacterOwned(nft.id) ? 'owned' : ''}`}>
-                  <div className="nft-image">
-                    <img src={nft.image} alt={nft.name} />
-                    <span className={`nft-rarity ${nft.rarity.toLowerCase()}`}>
-                      {nft.rarity}
-                    </span>
-                    {isCharacterOwned(nft.id) && (
-                      <div className="owned-badge">✓ OWNED</div>
-                    )}
-                  </div>
-                  <div className="nft-info">
-                    <h3 className="nft-name" style={{ color: nft.color }}>
-                      {nft.icon} {nft.name}
-                    </h3>
-                    <p className="nft-class">{nft.class}</p>
-                    
-                    {showFull && (
-                      <p className="nft-description">{nft.description}</p>
-                    )}
-
-                    <div className="nft-price">
-                      <span className="price-label">Price:</span>
-                      <span className="price-value">
-                        <span className="crypto-icon">Ⓜ</span>
-                        {nft.price} POL
+            {visibleNfts.map((nft) => {
+              const unlockStatus = canUnlockCharacter(nft) // ← ADD THIS
+              
+              return (
+                <TiltCard key={nft.id} maxTilt={15}>
+                  <div className={`nft-card ${isCharacterOwned(nft.id) ? 'owned' : ''}`}>
+                    <div className="nft-image">
+                      <img src={nft.image} alt={nft.name} />
+                      <span className={`nft-rarity ${nft.rarity.toLowerCase()}`}>
+                        {nft.rarity}
                       </span>
-                    </div>
-                    
-                    <button 
-                      className="nft-buy-btn"
-                      onClick={() => handleBuyClick(nft)}
-                      disabled={buyingId === nft.id || isCharacterOwned(nft.id)}
-                    >
-                      {isCharacterOwned(nft.id) ? (
-                        <>✓ Owned</>
-                      ) : buyingId === nft.id ? (
-                        <>
-                          <span className="spinner"></span>
-                          Processing...
-                        </>
-                      ) : (
-                        <>🛒 Buy Now</>
+                      {isCharacterOwned(nft.id) && (
+                        <div className="owned-badge">✓ OWNED</div>
                       )}
-                    </button>
+                      {/* ← ADD THIS: Lock badge */}
+                      {!isCharacterOwned(nft.id) && !unlockStatus.canUnlock && (
+                        <div className="lock-badge">🔒 LOCKED</div>
+                      )}
+                    </div>
+                    <div className="nft-info">
+                      <h3 className="nft-name" style={{ color: nft.color }}>
+                        {nft.icon} {nft.name}
+                      </h3>
+                      <p className="nft-class">{nft.class}</p>
+                      
+                      {showFull && (
+                        <>
+                          <p className="nft-description">{nft.description}</p>
+                          
+                          {/* ← ADD THIS: Requirements box */}
+                          {nft.unlockRequirements && (
+                            <div className="requirements-box">
+                              <div className="req-title">🎯 Requirements:</div>
+                              <div className="req-item">
+                                <span>⚔️ Wins:</span>
+                                <span className={stats.wins >= nft.unlockRequirements.battlesWon ? 'met' : 'not-met'}>
+                                  {stats.wins}/{nft.unlockRequirements.battlesWon}
+                                </span>
+                              </div>
+                              <div className="req-item">
+                                <span>📈 Level:</span>
+                                <span className={stats.level >= nft.unlockRequirements.level ? 'met' : 'not-met'}>
+                                  {stats.level}/{nft.unlockRequirements.level}
+                                </span>
+                              </div>
+                              <div className="req-item">
+                                <span>💰 POL:</span>
+                                <span className={stats.polBalance >= nft.unlockRequirements.polRequired ? 'met' : 'not-met'}>
+                                  {stats.polBalance.toFixed(2)}/{nft.unlockRequirements.polRequired}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+
+                      <div className="nft-price">
+                        <span className="price-label">Price:</span>
+                        <span className="price-value">
+                          <span className="crypto-icon">Ⓜ</span>
+                          {nft.price} POL
+                        </span>
+                      </div>
+                      
+                      {/* ← UPDATE THIS: Button logic */}
+                      <button 
+                        className="nft-buy-btn"
+                        onClick={() => handleBuyClick(nft)}
+                        disabled={
+                          buyingId === nft.id || 
+                          isCharacterOwned(nft.id) ||
+                          !unlockStatus.canUnlock
+                        }
+                      >
+                        {isCharacterOwned(nft.id) ? (
+                          <>✓ Owned</>
+                        ) : !unlockStatus.canUnlock ? (
+                          <>🔒 Locked</>
+                        ) : buyingId === nft.id ? (
+                          <>
+                            <span className="spinner"></span>
+                            Processing...
+                          </>
+                        ) : (
+                          <>🛒 Buy Now</>
+                        )}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </TiltCard>
-            ))}
+                </TiltCard>
+              )
+            })}
           </div>
 
-          {/* Show button only when viewing 6 */}
           {!showFull && (
             <button
               type="button"
@@ -664,11 +746,10 @@ function MarketplacePage({ account }) {
           )}
         </section>
 
-        {/* Show token chart only when full view is open */}
         {showFull && <TokenPriceChart />}
       </div>
 
-      {/* Confirmation Modal */}
+      {/* Modals remain the same */}
       {showModal && selectedNft && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
@@ -705,7 +786,7 @@ function MarketplacePage({ account }) {
             </div>
 
             <div className="modal-info">
-              ⚠️ This will deduct {selectedNft.price} POL from your wallet
+              ⚠️ This will deduct {selectedNft.price} POL from your balance
             </div>
 
             <div className="modal-buttons">
@@ -720,61 +801,59 @@ function MarketplacePage({ account }) {
         </div>
       )}
 
-      {/* Success Modal */}
-{showSuccessModal && purchasedNft && (
-  <div className="modal-overlay" onClick={() => setShowSuccessModal(false)}>
-    <div className="success-modal" onClick={(e) => e.stopPropagation()}>
-      <div className="success-icon">🎉</div>
-      <h2>Purchase Successful!</h2>
-      
-      <img src={purchasedNft.image} alt={purchasedNft.name} />
-      
-      <h3 style={{ color: purchasedNft.color }}>
-        {purchasedNft.icon} {purchasedNft.name}
-      </h3>
-      
-      <p>Congratulations! You now own this legendary warrior!</p>
-      
-      <div className="transaction-details">
-        <div className="detail-row">
-          <span className="detail-label">Character Class:</span>
-          <span className="detail-value">{purchasedNft.class}</span>
-        </div>
-        <div className="detail-row">
-          <span className="detail-label">Rarity:</span>
-          <span className="detail-value">{purchasedNft.rarity}</span>
-        </div>
-        <div className="detail-row">
-          <span className="detail-label">Purchase Time:</span>
-          <span className="detail-value">{new Date().toLocaleTimeString()}</span>
-        </div>
-      </div>
+      {showSuccessModal && purchasedNft && (
+        <div className="modal-overlay" onClick={() => setShowSuccessModal(false)}>
+          <div className="success-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="success-icon">🎉</div>
+            <h2>Purchase Successful!</h2>
+            
+            <img src={purchasedNft.image} alt={purchasedNft.name} />
+            
+            <h3 style={{ color: purchasedNft.color }}>
+              {purchasedNft.icon} {purchasedNft.name}
+            </h3>
+            
+            <p>Congratulations! You now own this legendary warrior!</p>
+            
+            <div className="transaction-details">
+              <div className="detail-row">
+                <span className="detail-label">Character Class:</span>
+                <span className="detail-value">{purchasedNft.class}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Rarity:</span>
+                <span className="detail-value">{purchasedNft.rarity}</span>
+              </div>
+              <div className="detail-row">
+                <span className="detail-label">Purchase Time:</span>
+                <span className="detail-value">{new Date().toLocaleTimeString()}</span>
+              </div>
+            </div>
 
-      <div className="modal-price">
-        <div className="price-label" style={{ fontSize: '14px', marginBottom: '10px', color: 'rgba(255,255,255,0.6)' }}>
-          Amount Paid
-        </div>
-        <div className="price-value">
-          <span className="crypto-icon">Ⓜ</span>
-          {purchasedNft.price} POL
-        </div>
-      </div>
+            <div className="modal-price">
+              <div className="price-label" style={{ fontSize: '14px', marginBottom: '10px', color: 'rgba(255,255,255,0.6)' }}>
+                Amount Paid
+              </div>
+              <div className="price-value">
+                <span className="crypto-icon">Ⓜ</span>
+                {purchasedNft.price} POL
+              </div>
+            </div>
 
-      <div className="modal-buttons">
-        <Link to="/game" className="play-button">
-          ⚔️ Play Now
-        </Link>
-        <button className="close-button" onClick={() => {
-          setShowSuccessModal(false)
-          loadOwnedCharacters()
-        }}>
-          Continue Shopping
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
+            <div className="modal-buttons">
+              <Link to="/game" className="play-button">
+                ⚔️ Play Now
+              </Link>
+              <button className="close-button" onClick={() => {
+                setShowSuccessModal(false)
+                loadOwnedCharacters()
+              }}>
+                Continue Shopping
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
