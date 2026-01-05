@@ -1282,4 +1282,86 @@
       font-size: 14px;
     }
   }
-  
+  /* POL Balance Display in Header */
+.current-pol-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(255, 149, 0, 0.2), rgba(255, 184, 0, 0.1));
+  border: 2px solid rgba(255, 149, 0, 0.4);
+  border-radius: 15px;
+  padding: 12px 25px;
+  margin: 20px auto;
+  max-width: 400px;
+  animation: polGlow 2s ease-in-out infinite;
+}
+
+@keyframes polGlow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(255, 149, 0, 0.3);
+    border-color: rgba(255, 149, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(255, 149, 0, 0.5);
+    border-color: rgba(255, 149, 0, 0.6);
+  }
+}
+
+.current-pol-display .pol-icon {
+  font-size: 28px;
+  filter: drop-shadow(0 2px 8px rgba(255, 149, 0, 0.6));
+}
+
+.current-pol-display .pol-balance {
+  font-size: 24px;
+  font-weight: 900;
+  color: #ff9500;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5);
+}
+
+.current-pol-display .pol-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Reward Hint */
+.reward-hint {
+  font-size: 13px;
+  color: #00ff88;
+  margin-top: 8px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 255, 136, 0.4);
+  animation: rewardPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes rewardPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .current-pol-display {
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 20px;
+  }
+
+  .current-pol-display .pol-hint {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .current-pol-display .pol-balance {
+    font-size: 20px;
+  }
+}

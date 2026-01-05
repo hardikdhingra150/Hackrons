@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import BattleArena from './BattleArena'
-import { useStats } from '../context/StatsContext' // Import useStats
+import { useStats } from '../context/StatsContext'
 import '../styles/matchmaking.css'
 
 // Import marketplace character images
@@ -30,7 +30,7 @@ const Matchmaking = ({ account, ownedCharacters, onBack }) => {
   const [inBattle, setInBattle] = useState(false)
   const [matchmakingProgress, setMatchmakingProgress] = useState(0)
   
-  const { addBattleResult } = useStats() // Get function to update stats
+  const { stats, updateAfterBattle } = useStats()
 
   const mockOpponents = [
     { name: 'Genesis Samurai', character: { id: 10, name: 'Genesis Samurai', attack: 88, defense: 68, speed: 82, health: 980, special: 85, image: character1 }},
@@ -85,17 +85,38 @@ const Matchmaking = ({ account, ownedCharacters, onBack }) => {
   }
 
   const handleBattleEnd = (won) => {
-    // Update stats
-    const result = addBattleResult(won)
+    // Calculate POL reward based on victory
+    const polReward = won ? parseFloat((Math.random() * 0.3 + 0.2).toFixed(2)) : 0
+    // Win: 0.2 - 0.5 POL random reward
+    // Lose: 0 POL
     
+    // Update stats with POL reward
+    updateAfterBattle(won, polReward)
+    
+    // Reset battle state
     setInBattle(false)
     setOpponent(null)
     setSelectedCharacter(null)
     
+    // Show reward message
     if (won) {
-      alert(`🎉 Victory! You earned +${result.xpGained} XP and +0.01 POL${result.newLevel > result.newLevel - 1 ? '\n🎊 LEVEL UP! You are now level ' + result.newLevel : ''}`)
+      const levelUpMessage = stats.xp + 50 >= stats.xpToNextLevel 
+        ? `\n\n🎊 LEVEL UP! You are now Level ${stats.level + 1}!` 
+        : ''
+      
+      alert(
+        `🎉 VICTORY!\n\n` +
+        `💰 +${polReward} POL earned!\n` +
+        `⭐ +50 XP gained!\n` +
+        `💎 Total POL: ${(stats.polBalance + polReward).toFixed(2)}` +
+        levelUpMessage
+      )
     } else {
-      alert(`💀 Defeat! Better luck next time. You earned +${result.xpGained} XP`)
+      alert(
+        `💀 DEFEAT!\n\n` +
+        `⭐ +20 XP gained (consolation)\n` +
+        `💪 Keep fighting to earn POL!`
+      )
     }
   }
 
@@ -120,6 +141,13 @@ const Matchmaking = ({ account, ownedCharacters, onBack }) => {
       <div className="matchmaking-header">
         <h1 className="matchmaking-title">⚔️ Battle Arena</h1>
         <p className="matchmaking-subtitle">Select your character and find a worthy opponent</p>
+        
+        {/* Display Current POL Balance */}
+        <div className="current-pol-display">
+          <span className="pol-icon">💰</span>
+          <span className="pol-balance">{stats.polBalance.toFixed(2)} POL</span>
+          <span className="pol-hint">Win battles to earn more!</span>
+        </div>
       </div>
 
       {!matchmaking && (
@@ -211,6 +239,7 @@ const Matchmaking = ({ account, ownedCharacters, onBack }) => {
                 <div className="selected-char-info">
                   <p className="ready-text">Ready to battle with</p>
                   <h3>{selectedCharacter.name}</h3>
+                  <p className="reward-hint">💰 Win to earn 0.2-0.5 POL</p>
                 </div>
               </div>
               <button className="start-matchmaking-btn" onClick={startMatchmaking}>
