@@ -463,3 +463,124 @@
     height: 60px;
   }
 }
+/* POL Balance Display */
+.pol-balance-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  background: linear-gradient(135deg, rgba(255, 149, 0, 0.15), rgba(255, 184, 0, 0.05));
+  border: 2px solid rgba(255, 149, 0, 0.4);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 25px;
+  animation: polGlowSubtle 3s ease-in-out infinite;
+}
+
+@keyframes polGlowSubtle {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(255, 149, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(255, 149, 0, 0.35);
+  }
+}
+
+.pol-balance-display .pol-icon {
+  font-size: 36px;
+  filter: drop-shadow(0 2px 8px rgba(255, 149, 0, 0.6));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.pol-balance-display .pol-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.pol-balance-display .pol-amount {
+  font-size: 28px;
+  font-weight: 900;
+  color: #ff9500;
+  text-shadow: 0 2px 10px rgba(255, 149, 0, 0.5);
+  letter-spacing: 1px;
+}
+
+.pol-balance-display .pol-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.pol-balance-display .pol-earned {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 15px;
+  border-left: 2px solid rgba(255, 149, 0, 0.3);
+}
+
+.pol-balance-display .earned-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pol-balance-display .earned-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: #00ff88;
+  text-shadow: 0 2px 8px rgba(0, 255, 136, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pol-balance-display {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .pol-balance-display .pol-earned {
+    border-left: none;
+    border-top: 1px solid rgba(255, 149, 0, 0.3);
+    padding-left: 0;
+    padding-top: 10px;
+    width: 100%;
+  }
+
+  .pol-balance-display .pol-icon {
+    font-size: 30px;
+  }
+
+  .pol-balance-display .pol-amount {
+    font-size: 24px;
+  }
+
+  .pol-balance-display .earned-value {
+    font-size: 14px;
+  }
+}
+
+/* Enhanced stats grid spacing */
+.player-stats-card {
+  margin-top: 40px;
+  padding: 30px;
+}
+
+.stats-grid {
+  margin-top: 20px;
+}

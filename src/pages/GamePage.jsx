@@ -324,6 +324,20 @@ function GamePage({ account }) {
         {/* Player Stats */}
         <div className="player-stats-card">
           <h3>Your Stats</h3>
+          
+          {/* ← ADD THIS: POL Balance Display */}
+          <div className="pol-balance-display">
+            <span className="pol-icon">💰</span>
+            <div className="pol-info">
+              <span className="pol-amount">{stats.polBalance.toFixed(2)} POL</span>
+              <span className="pol-label">Available Balance</span>
+            </div>
+            <div className="pol-earned">
+              <span className="earned-label">Total Earned:</span>
+              <span className="earned-value">{stats.totalPolEarned?.toFixed(2) || '0.00'} POL</span>
+            </div>
+          </div>
+
           <div className="stats-grid">
             <div className="stat-item">
               <div className="stat-value">{stats.totalBattles}</div>
@@ -350,7 +364,7 @@ function GamePage({ account }) {
             <div className="xp-progress-bar">
               <div 
                 className="xp-progress-fill"
-                style={{ width: `${(stats.xp % 100) / (stats.xpToNextLevel / stats.level) * 100}%` }}
+                style={{ width: `${(stats.xp / stats.xpToNextLevel) * 100}%` }}
               />
             </div>
           </div>
