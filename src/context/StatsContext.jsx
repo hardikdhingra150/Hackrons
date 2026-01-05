@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 const StatsContext = createContext()
 
@@ -11,66 +11,75 @@ export const useStats = () => {
 }
 
 export const StatsProvider = ({ children }) => {
-  // Load stats from localStorage or initialize
-  const [stats, setStats] = useState(() => {
-    const savedStats = localStorage.getItem('hackronsStats')
-    return savedStats ? JSON.parse(savedStats) : {
-      totalBattles: 0,
-      wins: 0,
-      losses: 0,
-      winRate: 0,
-      level: 1,
-      xp: 0,
-      xpToNextLevel: 100,
-    }
+  const [stats, setStats] = useState({
+    totalBattles: 0,
+    wins: 0,
+    losses: 0,
+    winRate: 0,
+    level: 1,
+    xp: 0,
+    xpToNextLevel: 100,
+    polBalance: 0, // Add POL balance
+    totalPolEarned: 0
   })
 
-  // Save stats to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('hackronsStats', JSON.stringify(stats))
-  }, [stats])
+    loadStats()
+  }, [])
 
-  const addBattleResult = (won) => {
-    const xpGained = won ? 100 : 25
-    const newXp = stats.xp + xpGained
-    const newLevel = Math.floor(newXp / 100) + 1
-    
-    setStats(prev => {
-      const newTotalBattles = prev.totalBattles + 1
-      const newWins = won ? prev.wins + 1 : prev.wins
-      const newLosses = won ? prev.losses : prev.losses + 1
-      const newWinRate = ((newWins / newTotalBattles) * 100).toFixed(1)
-
-      return {
-        totalBattles: newTotalBattles,
-        wins: newWins,
-        losses: newLosses,
-        winRate: parseFloat(newWinRate),
-        level: newLevel,
-        xp: newXp,
-        xpToNextLevel: newLevel * 100,
-      }
-    })
-
-    return { xpGained, newLevel: Math.floor(newXp / 100) + 1 }
+  const loadStats = () => {
+    const savedStats = localStorage.getItem('playerStats')
+    if (savedStats) {
+      setStats(JSON.parse(savedStats))
+    }
   }
 
-  const resetStats = () => {
-    const initialStats = {
-      totalBattles: 0,
-      wins: 0,
-      losses: 0,
-      winRate: 0,
-      level: 1,
-      xp: 0,
-      xpToNextLevel: 100,
+  const saveStats = (newStats) => {
+    localStorage.setItem('playerStats', JSON.stringify(newStats))
+    setStats(newStats)
+  }
+
+  const updateAfterBattle = (won, polEarned = 0) => {
+    const newStats = { ...stats }
+    
+    newStats.totalBattles += 1
+    if (won) {
+      newStats.wins += 1
+      newStats.polBalance += polEarned
+      newStats.totalPolEarned += polEarned
+    } else {
+      newStats.losses += 1
     }
-    setStats(initialStats)
-    localStorage.setItem('hackronsStats', JSON.stringify(initialStats))
+    
+    newStats.winRate = Math.round((newStats.wins / newStats.totalBattles) * 100) || 0
+    
+    // Add XP (more for wins)
+    const xpGained = won ? 50 : 20
+    newStats.xp += xpGained
+    
+    // Level up check
+    while (newStats.xp >= newStats.xpToNextLevel) {
+      newStats.xp -= newStats.xpToNextLevel
+      newStats.level += 1
+      newStats.xpToNextLevel = newStats.level * 100
+    }
+    
+    saveStats(newStats)
+  }
+
+  const deductPol = (amount) => {
+    const newStats = { ...stats }
+    newStats.polBalance -= amount
+    saveStats(newStats)
   }
 
   return (
-    <StatsContext.Provider value={{ stats, addBattleResult, resetStats }}>
+    <StatsContext.Provider value={{ 
+      stats, 
+      updateAfterBattle,
+      deductPol,
+      loadStats 
+    }}>
       {children}
     </StatsContext.Provider>
   )
